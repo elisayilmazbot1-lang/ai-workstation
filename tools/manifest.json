@@ -2,7 +2,7 @@
   "product": "AI Workstation",
   "version": "1.0.0",
   "spec": "AWS-SPEC-2.0",
-  "generated": "2026-11-01T09:41:33.583Z",
+  "generated": "2026-11-01T10:11:18.750Z",
   "fileCount": 235,
   "files": [
     {
@@ -482,8 +482,8 @@
     },
     {
       "p": "scripts/e2e-scenario.mjs",
-      "s": 11489,
-      "h": "8f1524edcfff86ea"
+      "s": 12808,
+      "h": "b187c7db010287c2"
     },
     {
       "p": "scripts/fix-native-win.mjs",
@@ -492,8 +492,8 @@
     },
     {
       "p": "scripts/install-electron.mjs",
-      "s": 3505,
-      "h": "f200463292883f22"
+      "s": 4531,
+      "h": "e60c0b940a20ec7d"
     },
     {
       "p": "scripts/mock-provider.ts",
@@ -517,8 +517,8 @@
     },
     {
       "p": "scripts/verify-release.mjs",
-      "s": 4739,
-      "h": "97fd7cc56280f525"
+      "s": 5684,
+      "h": "f794981a0f591de7"
     },
     {
       "p": "shared/constants.ts",

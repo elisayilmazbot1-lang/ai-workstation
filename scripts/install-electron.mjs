@@ -56,9 +56,36 @@ if (process.platform !== 'win32') {
 /* ---------------------------------------------------------------- */
 /* İndirme                                                           */
 /* ---------------------------------------------------------------- */
+/**
+ * ÖNEMLİ: @electron/get, indirilecek dosya adını şu şekilde üretiyor:
+ *
+ *   electron-33.4.11-win32-x64.zip      <-- "v" YOK (hatalı)
+ *
+ * Gerçek dosya adı ise:
+ *
+ *   electron-v33.4.11-win32-x64.zip     <-- "v" VAR
+ *
+ * Bu yüzden ELECTRON_CUSTOM_FILENAME ile dosya adını AÇIKÇA veriyoruz.
+ * Aksi hâlde tüm aynalar 404 döner.
+ */
+function dosyaAdi(platform, arch) {
+  const p = platform === 'darwin' ? 'darwin' : platform === 'win32' ? 'win32' : 'linux';
+  return `electron-v${electronVersion}-${p}-${arch}.zip`;
+}
+
 const aynalar = [
-  { ad: 'npmmirror', url: 'https://npmmirror.com/mirrors/electron/' },
-  { ad: 'github', url: 'https://github.com/electron/electron/releases/download/v' },
+  {
+    ad: 'npmmirror',
+    url: 'https://npmmirror.com/mirrors/electron/',
+  },
+  {
+    ad: 'npmmirror-binary',
+    url: 'https://registry.npmmirror.com/-/binary/electron/',
+  },
+  {
+    ad: 'github',
+    url: 'https://github.com/electron/electron/releases/download/v',
+  },
 ];
 
 const installJs = path.join(electronDir, 'install.js');
@@ -75,7 +102,13 @@ for (const ayna of aynalar) {
     execFileSync(process.execPath, [installJs], {
       cwd: electronDir,
       stdio: 'inherit',
-      env: { ...process.env, ELECTRON_MIRROR: ayna.url },
+      env: {
+        ...process.env,
+        ELECTRON_MIRROR: ayna.url,
+        ELECTRON_CUSTOM_FILENAME: dosyaAdi(process.platform, process.arch),
+        // GitHub yolunda sürüm "v" önekini URL'den alır; customDir gerekmez.
+        ...(ayna.ad === 'github' ? {} : { ELECTRON_CUSTOM_DIR: electronVersion }),
+      },
       timeout: 15 * 60 * 1000,
     });
   } catch {
@@ -95,6 +128,7 @@ if (!basarili) {
   console.error('\n  Elle çözüm:');
   console.error('    cd node_modules/electron');
   console.error('    set ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/');
+  console.error('    set ELECTRON_CUSTOM_FILENAME=' + dosyaAdi(process.platform, process.arch));
   console.error('    node install.js');
   process.exit(1);
 }

@@ -16,9 +16,34 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const steps = [];
 const started = Date.now();
 
+/**
+ * Windows'ta `npx` bir .cmd dosyasıdır; spawnSync onu doğrudan çalıştıramaz
+ * (ENOENT / EINVAL). Bu yüzden Windows'ta:
+ *   - .cmd/.bat uzantılı komutlar shell üzerinden çalıştırılır
+ *   - npm/npx çağrıları yerine node_modules/.bin altındaki .cmd dosyası kullanılır
+ *
+ * Linux/macOS'ta davranış değişmez.
+ */
+const IS_WIN = process.platform === 'win32';
+
 function run(label, command, args, opts = {}) {
   const t0 = Date.now();
-  const result = spawnSync(command, args, { cwd: root, encoding: 'utf8', ...opts });
+  let result;
+
+  if (IS_WIN && (command === 'npx' || command === 'npm')) {
+    // npx tsc -p ...  ->  node_modules/.bin/tsc.cmd -p ...
+    const arac = args[0];
+    const kalan = args.slice(1);
+    const cmdDosyasi = path.join(root, 'node_modules', '.bin', `${arac}.cmd`);
+    if (fs.existsSync(cmdDosyasi)) {
+      result = spawnSync(cmdDosyasi, kalan, { cwd: root, encoding: 'utf8', shell: false, ...opts });
+    } else {
+      result = spawnSync(command, args, { cwd: root, encoding: 'utf8', shell: true, ...opts });
+    }
+  } else {
+    result = spawnSync(command, args, { cwd: root, encoding: 'utf8', shell: IS_WIN, ...opts });
+  }
+
   const ms = Date.now() - t0;
   const ok = result.status === 0;
   steps.push({ label, ok, ms, output: `${result.stdout ?? ''}${result.stderr ?? ''}`.trim() });

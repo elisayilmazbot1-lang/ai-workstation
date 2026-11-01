@@ -210,9 +210,50 @@ try {
   const stats = (await call('GET', '/api/stats')).json;
   check('istatistikler tutarlı', stats?.tasks?.total >= 1 && stats?.emergencyStop === false);
 } finally {
-  mock.kill();
-  backend.kill();
-  fs.rmSync(dataDir, { recursive: true, force: true });
+  // Windows'ta process.kill() asenkron çalışır: dosya tanıtıcıları hemen
+  // bırakılmaz, SQLite veritabanı ve günlük dosyaları kilitli kalır.
+  // Doğrudan rmSync -> EPERM. Bu yüzden:
+  //   1) süreçleri öldür ve çıkmalarını bekle
+  //   2) kısa bir gecikme ver
+  //   3) silmeyi yeniden dene (maxRetries + retryDelay)
+  //   4) yine olmazsa temizliği "uyarı" say, testi düşürme
+  const bekle = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const bitis = (child) =>
+    new Promise((resolve) => {
+      if (!child || child.exitCode !== null || child.signalCode !== null) return resolve();
+      child.once('exit', resolve);
+      try {
+        child.kill('SIGTERM');
+      } catch {
+        /* zaten ölmüş */
+      }
+      setTimeout(() => {
+        try {
+          child.kill('SIGKILL');
+        } catch {
+          /* yok say */
+        }
+        resolve();
+      }, 3000);
+    });
+
+  await bitis(mock);
+  await bitis(backend);
+  await bekle(process.platform === 'win32' ? 500 : 100);
+
+  try {
+    fs.rmSync(dataDir, {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 200,
+    });
+  } catch (err) {
+    // Geçici klasör silinemezse test sonucunu ETKİLEMEZ.
+    // Windows Defender / arama dizini okuyucu kilitleyebilir.
+    console.warn(`· Uyarı: geçici klasör silinemedi (${err.code}). Elle temizlenebilir: ${dataDir}`);
+  }
 }
 
 const failed = checks.filter((c) => !c.ok);
