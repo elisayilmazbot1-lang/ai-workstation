@@ -2,7 +2,7 @@
   "product": "AI Workstation",
   "version": "1.0.0",
   "spec": "AWS-SPEC-2.0",
-  "generated": "2026-11-01T10:21:41.989Z",
+  "generated": "2026-11-01T10:24:55.545Z",
   "fileCount": 235,
   "files": [
     {
@@ -512,8 +512,8 @@
     },
     {
       "p": "scripts/smoke.ts",
-      "s": 2498,
-      "h": "c939c51e0ade7df9"
+      "s": 2573,
+      "h": "324588778004af00"
     },
     {
       "p": "scripts/verify-release.mjs",
@@ -997,8 +997,8 @@
     },
     {
       "p": "tests/integration/api-contract.test.ts",
-      "s": 7373,
-      "h": "4d8c8b163b46c09c"
+      "s": 7515,
+      "h": "9c82599a5b1505cd"
     },
     {
       "p": "tests/integration/chat-stream-electron-path.test.ts",
@@ -1117,8 +1117,8 @@
     },
     {
       "p": "tests/verify/migration-independent.ts",
-      "s": 4951,
-      "h": "cd1b5a4e627d0e8c"
+      "s": 5035,
+      "h": "87f81f27339a1f2b"
     },
     {
       "p": "tools/KUR.cmd",

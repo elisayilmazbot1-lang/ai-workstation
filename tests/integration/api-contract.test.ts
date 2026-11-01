@@ -1,6 +1,8 @@
 import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 import { makeHarness, writeProjectFixture, type TestHarness } from '../helpers';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 /**
  * HTTP sözleşme testi: her rota beklenen durum kodunu döndürmeli ve
@@ -98,7 +100,8 @@ describe('HTTP API sözleşmesi', () => {
   });
 
   it('terminal komutu gerçekten çalışır', async () => {
-    const cwd = fs.mkdtempSync('/tmp/aw-term-');
+    // Platformdan bağımsız geçici dizin: Windows'ta /tmp yok.
+    const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'aw-term-'));
     const r = await h.call('POST', '/api/terminal/run', { command: 'echo merhaba-dunya', cwd });
     // Onay beklenebilir (medium risk) ya da çalışabilir.
     if (r.body.requiresApproval) {

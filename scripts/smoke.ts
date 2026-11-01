@@ -1,7 +1,9 @@
+import os from 'node:os';
+import path from 'node:path';
 import { createContainer } from '../backend/server/container.js';
 import { buildApp } from '../backend/server/app.js';
 
-const c = createContainer({ dataDir: '/tmp/aw-smoke', inMemoryDb: true });
+const c = createContainer({ dataDir: path.join(os.tmpdir(), 'aw-smoke'), inMemoryDb: true });
 const app = await buildApp(c);
 await app.ready();
 

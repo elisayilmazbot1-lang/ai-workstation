@@ -2,13 +2,15 @@
 import Database from 'better-sqlite3';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import os from 'node:os';
+import path from 'node:path';
 import { MIGRATIONS, SCHEMA_VERSION } from '../../backend/database/schema.js';
 import { openDatabase } from '../../backend/database/db.js';
 
-const dir = '/tmp/migverify';
+const dir = path.join(os.tmpdir(), 'migverify');
 // Dizinin varlığına güvenilmez: temiz bir ortamda (CI/konteyner) /tmp boş olabilir.
 fs.mkdirSync(dir, { recursive: true });
-const file = `${dir}/v1.sqlite`;
+const file = path.join(dir, 'v1.sqlite');
 fs.rmSync(file, { force: true });
 
 const raw = new Database(file);
