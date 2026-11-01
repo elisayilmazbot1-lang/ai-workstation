@@ -2,8 +2,8 @@
   "product": "AI Workstation",
   "version": "1.0.0",
   "spec": "AWS-SPEC-2.0",
-  "generated": "2026-11-01T10:58:09.865Z",
-  "fileCount": 244,
+  "generated": "2026-11-01T11:23:00.281Z",
+  "fileCount": 245,
   "files": [
     {
       "p": ".github/workflows/build-windows.yml",
@@ -522,8 +522,8 @@
     },
     {
       "p": "scripts/fix-native-win.mjs",
-      "s": 10098,
-      "h": "51e37119e59cc4ae"
+      "s": 11203,
+      "h": "072afcb41ee5af9a"
     },
     {
       "p": "scripts/install-electron.mjs",
@@ -1189,6 +1189,11 @@
       "p": "tools/aw-manifest.cjs",
       "s": 5329,
       "h": "3ab8993bee3c9dca"
+    },
+    {
+      "p": "tools/aw-paketle.cjs",
+      "s": 10295,
+      "h": "cb64a7653a235337"
     },
     {
       "p": "tools/aw-scan.cjs",

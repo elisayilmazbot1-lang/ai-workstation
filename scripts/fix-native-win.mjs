@@ -100,22 +100,50 @@ if (arg === 'electron') {
 console.log('· Node ABI       :', abi, `(${runtimeEtiket}-win32-x64)`);
 
 /* ---------------------------------------------------------------- */
-/* Platform kapısı                                                   */
-/* ---------------------------------------------------------------- */
-if (process.platform !== 'win32') {
-  console.log('· Platform       :', `${process.platform}-${process.arch} (Windows değil)`);
-  console.log('  Bu betik Windows ikilisi yerleştirir; bu ortamda atlandı.');
-  console.log('  Linux/macOS için: npm rebuild better-sqlite3');
-  process.exit(0);
-}
-
-/* ---------------------------------------------------------------- */
 /* Paket kurulu mu?                                                  */
 /* ---------------------------------------------------------------- */
 if (!fs.existsSync(path.join(moduleDir, 'package.json'))) {
   console.error('✖ node_modules/better-sqlite3 bulunamadı.');
   console.error('  Önce: npm ci --ignore-scripts');
   process.exit(1);
+}
+
+/* ---------------------------------------------------------------- */
+/* Platform kapısı                                                   */
+/* ---------------------------------------------------------------- */
+/* Windows dışında hazır ikili yerleştirilmez; ama modül HİÇ derlenmemişse
+ * (npm ci --ignore-scripts sonrası olduğu gibi) yerel derleme yapılır.
+ * Aksi halde `npm run verify` anlaşılmaz bir "bindings" hatasıyla çöker —
+ * taze paketlenmiş arşivde birebir yaşandı. */
+if (process.platform !== 'win32') {
+  console.log('· Platform       :', `${process.platform}-${process.arch} (Windows değil)`);
+
+  const yerelIkililer = [
+    path.join(moduleDir, 'build', 'Release', 'better_sqlite3.node'),
+    path.join(moduleDir, 'addon-build', 'default', 'install-root', 'better_sqlite3.node'),
+  ];
+  const hazir = yerelIkililer.some((p) => fs.existsSync(p));
+
+  if (hazir) {
+    console.log('  Yerel ikili mevcut — yapılacak bir şey yok.');
+    process.exit(0);
+  }
+
+  console.log('  better-sqlite3 derlenmemiş (npm ci --ignore-scripts yapıldı).');
+  console.log('  Yerel derleme başlatılıyor — birkaç dakika sürebilir...');
+  try {
+    execFileSync(
+      process.platform === 'win32' ? 'npm.cmd' : 'npm',
+      ['rebuild', 'better-sqlite3', '--build-from-source'],
+      { cwd: root, stdio: 'inherit' },
+    );
+  } catch {
+    console.error('✖ Yerel derleme başarısız.');
+    console.error('  Elle deneyin: npm rebuild better-sqlite3 --build-from-source');
+    process.exit(1);
+  }
+  console.log('✔ better-sqlite3 yerel olarak derlendi.');
+  process.exit(0);
 }
 
 /* ---------------------------------------------------------------- */
