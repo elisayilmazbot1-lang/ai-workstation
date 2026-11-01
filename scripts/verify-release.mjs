@@ -17,44 +17,81 @@ const steps = [];
 const started = Date.now();
 
 /**
- * Windows'ta `npx` bir .cmd dosyasıdır; spawnSync onu doğrudan çalıştıramaz
- * (ENOENT / EINVAL). Bu yüzden Windows'ta:
- *   - .cmd/.bat uzantılı komutlar shell üzerinden çalıştırılır
- *   - npm/npx çağrıları yerine node_modules/.bin altındaki .cmd dosyası kullanılır
+ * KOMUT ÇALIŞTIRMA — Windows uyumluluğu
+ * -------------------------------------
+ * Windows'ta iki tuzak var:
  *
- * Linux/macOS'ta davranış değişmez.
+ *  1) `npx` / `tsc` / `vite` birer `.cmd` sarmalayıcısıdır. Node'un
+ *     spawnSync'i `shell: false` iken .cmd DOSYALARINI ÇALIŞTIRAMAZ
+ *     (dokümante edilmiş davranış; EINVAL / sessiz başarısızlık).
+ *
+ *  2) `shell: true` kullanılırsa args tek bir komut satırına birleştirilir
+ *     ve tırnaklanmaz. process.execPath Windows'ta
+ *     "C:\Program Files\nodejs\node.exe" olduğu için cmd şunu okur:
+ *       'C:\Program' is not recognized as an internal or external command
+ *
+ * ÇÖZÜM: .cmd dosyalarını hiç çağırmayın. Araçların JS giriş noktalarını
+ * `process.execPath` ile doğrudan çalıştırın. Boşluk içeren yollar args
+ * dizisinde olduğu için sorun çıkmaz, shell gerekmez.
  */
 const IS_WIN = process.platform === 'win32';
+const nm = (...p) => path.join(root, 'node_modules', ...p);
+
+/** npm/npx ile çağrılan araç adı -> JS giriş dosyası */
+const ARAC_GIRISI = {
+  tsc: nm('typescript', 'bin', 'tsc'),
+  vitest: nm('vitest', 'vitest.mjs'),
+  vite: nm('vite', 'bin', 'vite.js'),
+  'electron-vite': nm('electron-vite', 'bin', 'electron-vite.js'),
+};
 
 function run(label, command, args, opts = {}) {
   const t0 = Date.now();
   let result;
 
-  if (IS_WIN && (command === 'npx' || command === 'npm')) {
-    // npx tsc -p ...  ->  node_modules/.bin/tsc.cmd -p ...
+  if (command === 'npx' || command === 'npm') {
     const arac = args[0];
     const kalan = args.slice(1);
-    const cmdDosyasi = path.join(root, 'node_modules', '.bin', `${arac}.cmd`);
-    if (fs.existsSync(cmdDosyasi)) {
-      result = spawnSync(cmdDosyasi, kalan, { cwd: root, encoding: 'utf8', shell: false, ...opts });
+    const giris = ARAC_GIRISI[arac];
+
+    if (giris && fs.existsSync(giris)) {
+      // Doğrudan: node <arac-girisi> <argümanlar>
+      result = spawnSync(process.execPath, [giris, ...kalan], {
+        cwd: root,
+        encoding: 'utf8',
+        shell: false,
+        ...opts,
+      });
     } else {
-      // Son çare: cmd /c ile çalıştır. Komut adı tırnaklanmalı, aksi hâlde
-      // "C:\Program Files\..." yolu cmd tarafından bölünür.
-      result = spawnSync(command, args, { cwd: root, encoding: 'utf8', shell: true, ...opts });
+      // Bilinmeyen araç: Windows'ta .cmd'yi cmd /c ile çalıştır
+      const cmdDosyasi = nm('.bin', `${arac}.cmd`);
+      if (IS_WIN && fs.existsSync(cmdDosyasi)) {
+        result = spawnSync(process.env.ComSpec ?? 'cmd.exe', ['/d', '/s', '/c', `"${cmdDosyasi}"`, ...kalan], {
+          cwd: root,
+          encoding: 'utf8',
+          shell: false,
+          windowsVerbatimArguments: true,
+          ...opts,
+        });
+      } else {
+        const bin = nm('.bin', IS_WIN ? `${arac}.cmd` : arac);
+        result = spawnSync(bin, kalan, { cwd: root, encoding: 'utf8', shell: false, ...opts });
+      }
     }
   } else {
-    // ÖNEMLİ: shell: true KULLANILMAZ.
-    // process.execPath Windows'ta "C:\Program Files\nodejs\node.exe" gibi
-    // boşluk içerir. shell:true ile args dizisi tek bir komut satırına
-    // birleştirilir ve tırnaklanmadığı için cmd "C:\Program" okur:
-    //   'C:\Program' is not recognized as an internal or external command
-    // shell:false ile execFile semantiği kullanılır, boşluk sorun olmaz.
+    // process.execPath gibi doğrudan yürütülebilirler: shell YOK.
     result = spawnSync(command, args, { cwd: root, encoding: 'utf8', shell: false, ...opts });
   }
 
   const ms = Date.now() - t0;
   const ok = result.status === 0;
-  steps.push({ label, ok, ms, output: `${result.stdout ?? ''}${result.stderr ?? ''}`.trim() });
+  const cikti = `${result.stdout ?? ''}${result.stderr ?? ''}`.trim();
+  if (result.error) {
+    steps.push({ label, ok: false, ms, output: `CALISTIRILAMADI: ${result.error.message}` });
+    console.log(`✖ ${label} (${(ms / 1000).toFixed(1)} sn) — ${result.error.code ?? result.error.message}`);
+    return null;
+  }
+  steps.push({ label, ok, ms, output: cikti });
   console.log(`${ok ? '✔' : '✖'} ${label} (${(ms / 1000).toFixed(1)} sn)`);
   return ok ? result.stdout ?? '' : null;
 }

@@ -2,7 +2,7 @@
   "product": "AI Workstation",
   "version": "1.0.0",
   "spec": "AWS-SPEC-2.0",
-  "generated": "2026-11-01T10:17:38.573Z",
+  "generated": "2026-11-01T10:21:41.989Z",
   "fileCount": 235,
   "files": [
     {
@@ -517,8 +517,8 @@
     },
     {
       "p": "scripts/verify-release.mjs",
-      "s": 6253,
-      "h": "2fca6c1ff0911722"
+      "s": 7391,
+      "h": "30fcdb009113a041"
     },
     {
       "p": "shared/constants.ts",
