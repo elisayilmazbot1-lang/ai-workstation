@@ -92,8 +92,18 @@ function createWindow(): BrowserWindow {
     }
   });
 
-  if (isDev && process.env.AW_RENDERER_URL) {
-    void win.loadURL(process.env.AW_RENDERER_URL);
+  // GELİŞTİRME ADRESİ — iki ortam değişkeni de kabul edilir.
+  //
+  // `electron-vite dev`, renderer dev sunucusunun adresini standart olarak
+  // ELECTRON_RENDERER_URL değişkenine yazar. Bu dosya bir zamanlar yalnızca
+  // AW_RENDERER_URL okuyordu; o değişkeni hiçbir araç yayınlamadığı için
+  // geliştirme her zaman `dist/index.html`'e düşüyordu. `out/` ve `dist/`
+  // depoda izlenmediği için temiz klonda pencere BOŞ açılıyordu.
+  // AW_RENDERER_URL, adresi elle vermek isteyenler için korunuyor.
+  const rendererUrl = process.env.ELECTRON_RENDERER_URL ?? process.env.AW_RENDERER_URL;
+
+  if (isDev && rendererUrl) {
+    void win.loadURL(rendererUrl);
     win.webContents.openDevTools({ mode: 'detach' });
   } else {
     void win.loadFile(path.join(__dirname, '../../dist/index.html'));

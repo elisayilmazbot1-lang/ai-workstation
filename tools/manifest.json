@@ -2,8 +2,8 @@
   "product": "AI Workstation",
   "version": "1.0.0",
   "spec": "AWS-SPEC-2.0",
-  "generated": "2026-11-01T10:24:55.545Z",
-  "fileCount": 235,
+  "generated": "2026-11-01T10:58:09.865Z",
+  "fileCount": 244,
   "files": [
     {
       "p": ".github/workflows/build-windows.yml",
@@ -24,6 +24,11 @@
       "p": "CHANGELOG.md",
       "s": 10935,
       "h": "4b124da8c4bce512"
+    },
+    {
+      "p": "GITHUB_YUKLEME.md",
+      "s": 5825,
+      "h": "4ec3757bdf89de5c"
     },
     {
       "p": "KUR.cmd",
@@ -356,9 +361,39 @@
       "h": "d78580dd8c302ad5"
     },
     {
+      "p": "docs/teslim/WINDOWS_DOGRULAMA.md",
+      "s": 9298,
+      "h": "fed75741b071b0bd"
+    },
+    {
+      "p": "docs/teslim/kanit/ONCE-siyah-pencere.png",
+      "s": 417,
+      "h": "c71e98072e5d6de6"
+    },
+    {
+      "p": "docs/teslim/kanit/electron-dev-pencere.png",
+      "s": 215600,
+      "h": "5462782c20fa51db"
+    },
+    {
+      "p": "docs/teslim/kanit/electron-pencere-kanit.png",
+      "s": 189346,
+      "h": "9f7e7f0d451dabf3"
+    },
+    {
       "p": "docs/teslim/verify-report.json",
       "s": 1011,
       "h": "8a759664fcfebb8d"
+    },
+    {
+      "p": "electron-builder.yml",
+      "s": 2213,
+      "h": "21ab3ca98b9f43cd"
+    },
+    {
+      "p": "electron.vite.config.ts",
+      "s": 1281,
+      "h": "a52198053e6e09e4"
     },
     {
       "p": "electron/ipc/handlers.ts",
@@ -372,8 +407,8 @@
     },
     {
       "p": "electron/main/index.ts",
-      "s": 4655,
-      "h": "96dbe4313e6b3a5d"
+      "s": 5246,
+      "h": "a9942ce28d7c917d"
     },
     {
       "p": "electron/preload/index.ts",
@@ -381,24 +416,19 @@
       "h": "f7be24e1a320f4ce"
     },
     {
-      "p": "electron-builder.yml",
-      "s": 2213,
-      "h": "21ab3ca98b9f43cd"
-    },
-    {
-      "p": "electron.vite.config.ts",
-      "s": 1281,
-      "h": "a52198053e6e09e4"
-    },
-    {
       "p": "index.html",
       "s": 620,
       "h": "275d0f8cd01a4f62"
     },
     {
+      "p": "package-lock.json",
+      "s": 391032,
+      "h": "cc89cfcf47bf48b0"
+    },
+    {
       "p": "package.json",
-      "s": 3099,
-      "h": "b4825de8eea5dccc"
+      "s": 3371,
+      "h": "0cc300e1a8068993"
     },
     {
       "p": "postcss.config.js",
@@ -481,14 +511,19 @@
       "h": "1c6267cd2269e705"
     },
     {
+      "p": "scripts/dev-electron.mjs",
+      "s": 4549,
+      "h": "9f0206b665be8b02"
+    },
+    {
       "p": "scripts/e2e-scenario.mjs",
       "s": 12808,
       "h": "b187c7db010287c2"
     },
     {
       "p": "scripts/fix-native-win.mjs",
-      "s": 5883,
-      "h": "db5966024540078b"
+      "s": 10098,
+      "h": "51e37119e59cc4ae"
     },
     {
       "p": "scripts/install-electron.mjs",
@@ -1151,9 +1186,19 @@
       "h": "830a2c067a380ebf"
     },
     {
+      "p": "tools/aw-manifest.cjs",
+      "s": 5329,
+      "h": "3ab8993bee3c9dca"
+    },
+    {
       "p": "tools/aw-scan.cjs",
       "s": 20637,
       "h": "1f965ff17982eee6"
+    },
+    {
+      "p": "tools/prebuilds/better-sqlite3-v12.11.1-electron-v130-win32-x64.tar.gz",
+      "s": 1039246,
+      "h": "ef294bd3bc46ed90"
     },
     {
       "p": "tools/prebuilds/better-sqlite3-v12.11.1-node-v127-win32-x64.tar.gz",

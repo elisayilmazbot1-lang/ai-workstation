@@ -1,36 +1,40 @@
 /**
  * Windows yerel modül kurulumu — GITHUB'A GEREK YOK.
  *
- *   node scripts/fix-native-win.mjs
+ *   node scripts/fix-native-win.mjs            # Node için  (ABI 147)
+ *   node scripts/fix-native-win.mjs electron   # Electron için (ABI 130)
+ *   node scripts/fix-native-win.mjs node       # açıkça Node
  *
- * NEDEN VAR
- * ---------
- * `npm ci`, `better-sqlite3` için `prebuild-install` çalıştırır. Bu araç hazır
- * ikiliyi GitHub Releases'ten indirmeye çalışır:
+ * NEDEN İKİ AYRI İKİLİ GEREKİYOR
+ * ------------------------------
+ * `better-sqlite3` yerel bir modüldür (.node) ve her çalışma zamanı için
+ * AYRI derlenir. ABI numarası (NODE_MODULE_VERSION) farklıysa modül yüklenmez:
  *
- *   https://github.com/WiseLibs/better-sqlite3/releases/download/v12.11.1/
- *       better-sqlite3-v12.11.1-node-v147-win32-x64.tar.gz
+ *   Error: The module '...better_sqlite3.node' was compiled against a
+ *   different Node.js version using NODE_MODULE_VERSION 147. This version
+ *   of Node.js requires NODE_MODULE_VERSION 130.
  *
- * GitHub Releases bazı ağlarda (Türkiye'de sık) 404 döner/engellenir. O zaman
- * `prebuild-install` şu mesajı verip kaynaktan derlemeye düşer:
+ *   Node 26        -> ABI 147
+ *   Electron 33    -> ABI 130
  *
- *   prebuild-install warn install No prebuilt binaries found
- *   (target=26.13.0 runtime=node arch=x64 libc= platform=win32)
+ * `npm run dev:backend` düz Node ile, `npm run dev:electron` ise Electron ile
+ * çalışır. Aynı node_modules ikisini birden memnun edemez; bu yüzden baytlar
+ * kurulum sırasında değiştirilir.
  *
- * Sonra `node-gyp` Visual Studio C++ ister ve `npm ci` çöker.
+ * KULLANIM
+ * --------
+ *   npm run native            -> Node ikilisi (backend / verify / testler)
+ *   npm run native:electron   -> Electron ikilisi (dev:electron / build:win)
  *
- * ÇÖZÜM
- * -----
- * Bu betik, arşivle birlikte gelen hazır `.tar.gz` dosyasını kullanır.
- * İnternet bağlantısı GEREKMEZ. İçindeki `better_sqlite3.node` dosyasının
- * Windows PE32+ olduğunu doğrular ve doğru yere kopyalar.
+ * `npm run dev:electron` ve `npm run build:win` betikleri, kendilerinden önce
+ * otomatik olarak Electron ikilisini yerleştirir; elle çağırmak gerekmez.
  *
- * KULLANIM SIRASI
- * ---------------
- *   1) npm ci --ignore-scripts      (derleme denemesi yapmaz)
- *   2) node scripts/fix-native-win.mjs
- *   3) npm run monaco
- *   4) npm run verify
+ * NEDEN prebuild-install KULLANILMIYOR
+ * ------------------------------------
+ * `prebuild-install` hazır ikiliyi GitHub Releases'ten indirir. Bu adres bazı
+ * ağlarda (Türkiye'de sık) 404 döner; o zaman node-gyp kaynaktan derlemeye
+ * düşer ve Visual Studio C++ ister. Bu betik arşivle gelen dosyayı kullanır:
+ * internet GEREKMEZ.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -40,38 +44,70 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const moduleDir = path.join(root, 'node_modules', 'better-sqlite3');
 const target = path.join(moduleDir, 'build', 'Release', 'better_sqlite3.node');
+const marker = path.join(moduleDir, 'build', 'Release', '.abi-kurulu');
 
 /* ---------------------------------------------------------------- */
-/* Node sürümü → ABI                                                 */
+/* Node ABI tablosu                                                  */
 /* ---------------------------------------------------------------- */
-const ABI = {
-  20: 115,
-  22: 127,
-  23: 131,
-  24: 137,
-  25: 141,
-  26: 147,
-};
+const NODE_ABI = { 20: 115, 22: 127, 23: 131, 24: 137, 25: 141, 26: 147 };
 
-const major = Number(process.versions.node.split('.')[0]);
-const abi = ABI[major];
+/** Electron ana sürümü -> ABI (electron-releases tablosu). */
+const ELECTRON_ABI = { 28: 119, 29: 121, 30: 123, 31: 125, 32: 128, 33: 130, 34: 132, 35: 133 };
 
-console.log('· Node sürümü  :', process.version);
-console.log('· Platform     :', `${process.platform}-${process.arch}`);
+/* ---------------------------------------------------------------- */
+/* Çalışma zamanı seçimi                                             */
+/* ---------------------------------------------------------------- */
+const arg = (process.argv[2] ?? 'node').toLowerCase();
+if (!['node', 'electron'].includes(arg)) {
+  console.error(`✖ Geçersiz çalışma zamanı: ${arg}`);
+  console.error('  Kullanım: node scripts/fix-native-win.mjs [node|electron]');
+  process.exit(1);
+}
 
+let abi;
+let runtimeEtiket;
+
+if (arg === 'electron') {
+  const electronPkg = path.join(root, 'node_modules', 'electron', 'package.json');
+  if (!fs.existsSync(electronPkg)) {
+    console.error('✖ node_modules/electron yok.');
+    console.error('  Önce: node scripts/install-electron.mjs');
+    process.exit(1);
+  }
+  const electronVersion = JSON.parse(fs.readFileSync(electronPkg, 'utf8')).version;
+  const major = electronVersion.split('.')[0];
+  abi = ELECTRON_ABI[Number(major)];
+  runtimeEtiket = `electron-v${abi}`;
+  console.log('· Çalışma zamanı : Electron', electronVersion);
+  if (!abi) {
+    console.error(`✖ Electron ${electronVersion} için ABI eşlemesi yok.`);
+    console.error('  scripts/fix-native-win.mjs içindeki ELECTRON_ABI tablosuna ekleyin.');
+    console.error('  Bilinen: ' + Object.keys(ELECTRON_ABI).join(', '));
+    process.exit(1);
+  }
+} else {
+  const major = Number(process.versions.node.split('.')[0]);
+  abi = NODE_ABI[major];
+  runtimeEtiket = `node-v${abi}`;
+  console.log('· Çalışma zamanı : Node', process.version);
+  if (!abi) {
+    console.error(`✖ Node ${major} için ABI eşlemesi yok.`);
+    console.error('  Bilinen: ' + Object.keys(NODE_ABI).join(', '));
+    process.exit(1);
+  }
+}
+
+console.log('· Node ABI       :', abi, `(${runtimeEtiket}-win32-x64)`);
+
+/* ---------------------------------------------------------------- */
+/* Platform kapısı                                                   */
+/* ---------------------------------------------------------------- */
 if (process.platform !== 'win32') {
-  console.error('✖ Bu betik yalnızca Windows içindir.');
-  console.error('  Linux/macOS için: npm rebuild better-sqlite3');
-  process.exit(1);
+  console.log('· Platform       :', `${process.platform}-${process.arch} (Windows değil)`);
+  console.log('  Bu betik Windows ikilisi yerleştirir; bu ortamda atlandı.');
+  console.log('  Linux/macOS için: npm rebuild better-sqlite3');
+  process.exit(0);
 }
-
-if (!abi) {
-  console.error(`✖ Node ${major} için ABI eşlemesi yok.`);
-  console.error('  scripts/fix-native-win.mjs içindeki ABI tablosuna ekleyin.');
-  console.error('  Bilinen: ' + Object.keys(ABI).join(', '));
-  process.exit(1);
-}
-console.log('· Node ABI     :', abi, `(node-v${abi}-win32-x64)`);
 
 /* ---------------------------------------------------------------- */
 /* Paket kurulu mu?                                                  */
@@ -83,12 +119,23 @@ if (!fs.existsSync(path.join(moduleDir, 'package.json'))) {
 }
 
 /* ---------------------------------------------------------------- */
+/* Zaten doğru ikili kurulu mu?                                      */
+/* ---------------------------------------------------------------- */
+if (fs.existsSync(marker) && fs.existsSync(target)) {
+  const kurulu = fs.readFileSync(marker, 'utf8').trim();
+  if (kurulu === runtimeEtiket) {
+    console.log(`✔ ${runtimeEtiket} ikilisi zaten kurulu — atlandı.`);
+    process.exit(0);
+  }
+}
+
+/* ---------------------------------------------------------------- */
 /* Hazır ikiliyi bul                                                 */
 /* ---------------------------------------------------------------- */
-const ad = `better-sqlite3-v12.11.1-node-v${abi}-win32-x64.tar.gz`;
+const ad = `better-sqlite3-v12.11.1-${runtimeEtiket}-win32-x64.tar.gz`;
 const candidates = [
-  path.join(root, 'tools', 'prebuilds', ad),   // depo düzeni (önerilen)
-  path.join(root, 'prebuilds', ad),            // eski/kopyalanmış düzen
+  path.join(root, 'tools', 'prebuilds', ad),
+  path.join(root, 'prebuilds', ad),
 ];
 
 const archive = candidates.find((p) => fs.existsSync(p));
@@ -97,14 +144,13 @@ if (!archive) {
   console.error('✖ Hazır ikili arşivi bulunamadı. Aranan yerler:');
   for (const c of candidates) console.error('   -', c);
   console.error('');
-  console.error('  Çözüm: ilgili arşivi tools/prebuilds/ içine koyun:');
-  console.error('    ' + ad);
+  console.error(`  Çözüm: ${ad} dosyasını tools/prebuilds/ içine koyun.`);
   console.error('  İndirme: https://github.com/WiseLibs/better-sqlite3/releases/tag/v12.11.1');
   process.exit(1);
 }
 
-console.log('· Arşiv        :', path.relative(root, archive));
-console.log('· Boyut        :', (fs.statSync(archive).size / 1024).toFixed(0), 'KB');
+console.log('· Arşiv         :', path.relative(root, archive));
+console.log('· Boyut         :', (fs.statSync(archive).size / 1024).toFixed(0), 'KB');
 
 /* ---------------------------------------------------------------- */
 /* Çıkar                                                             */
@@ -129,23 +175,49 @@ if (!fs.existsSync(extracted)) {
 /* ---------------------------------------------------------------- */
 /* PE doğrulaması                                                    */
 /* ---------------------------------------------------------------- */
-const head = fs.readFileSync(extracted).subarray(0, 2);
-if (head[0] !== 0x4d || head[1] !== 0x5a) {
+const ikili = fs.readFileSync(extracted);
+if (ikili[0] !== 0x4d || ikili[1] !== 0x5a) {
   console.error('✖ Çıkarılan dosya Windows PE değil. Kurulum durduruldu.');
   process.exit(1);
 }
-console.log('· PE32+ imzası : ✔ (MZ)');
+console.log('· PE32+ imzası  : ✔ (MZ)');
+
+/* ---------------------------------------------------------------- */
+/* ABI damgası — dosya adına GÜVENME                                 */
+/* ---------------------------------------------------------------- */
+/* Node, .node dosyasını yüklerken `node_register_module_v<ABI>` adlı dışa
+ * aktarılan sembolü arar. Bu ad ikilinin içinde düz metin olarak durur ve
+ * dosyanın GERÇEK ABI'sini söyler. Arşiv yanlış etiketlenmişse (indirme
+ * karışmış, ayna bozuk dosya vermiş) bu kontrol yakalar; yoksa kullanıcı
+ * `NODE_MODULE_VERSION 130` hatasını ancak uygulamayı açınca görür.
+ */
+const damga = `node_register_module_v${abi}`;
+if (!ikili.includes(Buffer.from(damga, 'ascii'))) {
+  const bulunan = ikili.toString('latin1').match(/node_register_module_v(\d+)/);
+  console.error('✖ Arşivdeki ikili bu çalışma zamanı için değil.');
+  console.error(`  Beklenen damga : ${damga}`);
+  console.error(`  Dosyada bulunan: ${bulunan ? bulunan[0] : '(hiç yok)'}`);
+  console.error(`  Arşiv          : ${path.relative(root, archive)}`);
+  console.error('  Bu arşivi doğru sürümle değiştirin; kurulum durduruldu.');
+  process.exit(1);
+}
+console.log(`· ABI damgası    : ✔ ${damga}`);
 
 /* ---------------------------------------------------------------- */
 /* Yerleştir                                                         */
 /* ---------------------------------------------------------------- */
 fs.mkdirSync(path.dirname(target), { recursive: true });
 fs.copyFileSync(extracted, target);
+fs.writeFileSync(marker, runtimeEtiket);
 fs.rmSync(tmp, { recursive: true, force: true });
 
-console.log('✔ better_sqlite3.node yerleştirildi');
+console.log(`✔ better_sqlite3.node yerleştirildi (${runtimeEtiket})`);
 console.log('  →', path.relative(root, target));
 console.log('');
-console.log('Şimdi çalıştırın:');
-console.log('  npm run monaco');
-console.log('  npm run verify');
+if (arg === 'electron') {
+  console.log('Şimdi çalıştırın:  npm run dev:electron');
+  console.log('Not: npm run verify / dev:backend için önce "npm run native" gerekir.');
+} else {
+  console.log('Şimdi çalıştırın:  npm run monaco  &&  npm run verify');
+  console.log('Not: npm run dev:electron için önce "npm run native:electron" gerekir.');
+}
