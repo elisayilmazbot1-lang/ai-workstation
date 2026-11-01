@@ -1,0 +1,63 @@
+appId: com.aiworkstation.desktop
+productName: AI Workstation
+copyright: Copyright © 2026 AI Workstation
+directories:
+  # NOT: `icon` burada geçersizdir; ikon platform bazında verilir (win.icon).
+  output: release
+  buildResources: resources
+files:
+  - resources/**/*
+  - out/**/*
+  - dist/**/*
+  - dist-backend/**/*
+  - node_modules/**/*
+  - package.json
+  - "!**/*.map"
+  - "!node_modules/.cache/**"
+  # Windows paketinde Linux ELF yerel modülleri OLMAMALI.
+  # `cpu-features` ve `ssh2/sshcrypto` docker-modem'in OPSİYONEL bağımlılıklarıdır;
+  # ürün kodu her ikisini de `try {}` içinde yükler ve JS yedeğine düşer
+  # (node_modules/ssh2/lib/protocol/crypto.js:29). Linux ikilileri Windows'ta
+  # yüklenemez ve kurulumda hata üretir.
+  - "!node_modules/cpu-features/build/**"
+  - "!node_modules/ssh2/lib/protocol/crypto/build/**"
+extraMetadata:
+  main: out/main/index.js
+# Yerel modüller önceden derlenmiş ikiliyle gelir (better-sqlite3 Windows DLL).
+# Linux üzerinde Windows için kaynaktan derleme MÜMKÜN DEĞİLDİR (node-gyp
+# cross-compile desteklemez); bu yüzden electron-builder'ın rebuild adımı
+# kapatılır. Doğru platform ikilisi `npm rebuild` ile Windows'ta üretilmelidir.
+npmRebuild: false
+# Sıkıştırma `maximum` yerine `store`: 2 GB'lık CI/konteyner ortamlarında NSIS
+# maksimum sıkıştırma sırasında bellek yetersizliğinden ölüyordu (SIGKILL/137).
+# `store` paketi biraz büyütür (~95 MB) ama derlemeyi güvenilir kılar.
+compression: store
+asar: true
+asarUnpack:
+  - "**/node_modules/better-sqlite3/**"
+  - "**/*.node"
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  icon: resources/icons/icon.ico
+  artifactName: AI_WORKSTATION_Setup.${ext}
+  requestedExecutionLevel: asInvoker
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: AI Workstation
+  uninstallDisplayName: AI Workstation
+  deleteAppDataOnUninstall: false
+  installerLanguages: [tr_TR]
+  language: "1055"
+  license: ../LICENSE.txt
+portable:
+  artifactName: AI_WORKSTATION_Portable.${ext}
+publish: null

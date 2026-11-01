@@ -1,0 +1,54 @@
+{
+  "tarih": "2026-11-01T03:27:19.012Z",
+  "toplamSureSn": 32,
+  "adimlar": [
+    {
+      "label": "Sürüm tutarlılığı (uygulama ≠ şartname)",
+      "ok": true,
+      "ms": 0
+    },
+    {
+      "label": "Şartname tutarlılığı (scripts/check-spec-consistency.mjs)",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "label": "Tür denetimi (tsc --noEmit)",
+      "ok": true,
+      "ms": 7023
+    },
+    {
+      "label": "Testler (vitest run)",
+      "ok": true,
+      "ms": 11869
+    },
+    {
+      "label": "Arayüz derlemesi (vite build)",
+      "ok": true,
+      "ms": 3611
+    },
+    {
+      "label": "Electron derlemesi (electron-vite build)",
+      "ok": true,
+      "ms": 5095
+    },
+    {
+      "label": "Uçtan uca senaryo (scripts/e2e-scenario.mjs)",
+      "ok": true,
+      "ms": 4331
+    }
+  ],
+  "surumler": {
+    "uygulama": "1.0.0",
+    "sartname": "2.0"
+  },
+  "testler": {
+    "dosya": 22,
+    "test": 149
+  },
+  "e2e": {
+    "toplam": 37,
+    "gecen": 37,
+    "basarisiz": 0
+  }
+}

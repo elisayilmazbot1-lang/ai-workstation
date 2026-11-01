@@ -1,0 +1,8 @@
+{
+  "uretildi": "2026-11-01T03:27:27.106Z",
+  "surum": "1.0.0",
+  "dogrulama": "PowerShell: Get-FileHash <dosya> -Algorithm SHA256",
+  "dosyalar": {
+    "artifacts/AI_WORKSTATION_Final.zip": "74da91b0e5dc302f637d72c61cde3616d03d3998a235373b5b6f3d5f307a6e83"
+  }
+}

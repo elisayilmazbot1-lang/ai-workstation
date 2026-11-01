@@ -1,0 +1,31 @@
+AI Workstation — Özel Kullanım Lisansı
+Copyright © 2026 AI Workstation. Tüm hakları saklıdır.
+
+1. TANIMLAR
+   "Yazılım", bu paketle birlikte dağıtılan AI Workstation uygulamasını,
+   kaynak kodlarını, derlenmiş dosyalarını ve belgelerini ifade eder.
+
+2. LİSANS VERİLMESİ
+   Bu yazılımı, kendi cihazlarınızda kullanmak üzere kopyalayabilir ve
+   çalıştırabilirsiniz. Yazılımı üçüncü kişilere yeniden satamaz, kiralayamaz
+   veya ticari bir hizmet olarak sunamazsınız. Kaynak kodda değişiklik yapma
+   hakkı, yalnızca kendi kullanımınız için tanınmıştır.
+
+3. ÜÇÜNCÜ TARAF SERVİSLER
+   Yazılım, kendi sağlayıcı hesaplarınızla yapay zekâ servislerine bağlanır.
+   Bu servislerin kullanım koşulları ve ücretlendirmesi ilgili sağlayıcıya
+   aittir. Yazılım hiçbir sağlayıcının web arayüzünü otomatikleştirmez,
+   erişim anahtarlarını paylaşmaz veya oturum çerezlerini kopyalamaz.
+
+4. GARANTİ REDDİ
+   YAZILIM "OLDUĞU GİBİ" SUNULUR. ÜRETİCİ, YAZILIMIN KESİNTİSİZ VEYA HATASIZ
+   ÇALIŞACAĞINA DAİR GARANTİ VERMEZ. YAPAY ZEKÂ ÇIKTILARI DOĞRULANMAMIŞ
+   OLABİLİR; HİÇBİR ÇIKTI OTOMATİK OLARAK UYGULANMAZ.
+
+5. SORUMLULUK SINIRI
+   YASALARIN İZİN VERDİĞİ AZAMİ ÖLÇÜDE, YAZILIMIN KULLANIMINDAN DOĞAN
+   DOLAYLI VEYA SONUÇSAL ZARARLARDAN ÜRETİCİ SORUMLU TUTULAMAZ.
+
+6. AÇIK KAYNAK BİLEŞENLER
+   Üçüncü taraf paketler kendi lisansları altındadır. Ayrıntılar için
+   node_modules içindeki paketlerin LICENSE dosyalarına bakın.

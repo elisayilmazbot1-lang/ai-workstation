@@ -1,0 +1,38 @@
+# --- Bağımlılıklar ---
+node_modules/
+
+# --- Derleme çıktıları (üretilen, depoya girmez) ---
+dist/
+dist-backend/
+out/
+release/
+public/monaco/
+*.tsbuildinfo
+
+# --- Yerel veri ---
+.data/
+coverage/
+artifacts/
+*.log
+.DS_Store
+Thumbs.db
+
+# --- Yerel modül hazırlığı (prepare-native-win.mjs) ---
+.cache-native/
+
+# --- Ortam / sırlar ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+
+# --- Geçici ---
+*.tmp
+*.bak
+npm-debug.log*
+
+# NOT: tools/prebuilds/*.tar.gz BİLEREK depoda tutulur.
+# GitHub Releases erişimi engelli ağlarda `npm ci` çöker; bu arşivler
+# Windows için hazır better-sqlite3 ikililerini taşır.

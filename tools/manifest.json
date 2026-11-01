@@ -1,0 +1,1184 @@
+{
+  "product": "AI Workstation",
+  "version": "1.0.0",
+  "spec": "AWS-SPEC-2.0",
+  "generated": "2026-11-01T09:37:56.882Z",
+  "fileCount": 235,
+  "files": [
+    {
+      "p": ".github/workflows/build-windows.yml",
+      "s": 3097,
+      "h": "90ab9fcff9d754d3"
+    },
+    {
+      "p": ".gitignore",
+      "s": 628,
+      "h": "9b4d9cfbf1013eb3"
+    },
+    {
+      "p": ".npmrc",
+      "s": 174,
+      "h": "f6101970f6f988b8"
+    },
+    {
+      "p": "CHANGELOG.md",
+      "s": 10935,
+      "h": "4b124da8c4bce512"
+    },
+    {
+      "p": "KUR.cmd",
+      "s": 2318,
+      "h": "a68918e2d7c5a0cc"
+    },
+    {
+      "p": "LICENSE.txt",
+      "s": 1563,
+      "h": "9d89d31de5f9a87c"
+    },
+    {
+      "p": "README_TR.md",
+      "s": 15211,
+      "h": "38c8b9bf8c1ae26a"
+    },
+    {
+      "p": "SECURITY_REPORT.md",
+      "s": 14530,
+      "h": "27331c9216081fb0"
+    },
+    {
+      "p": "TEST_REPORT.md",
+      "s": 12499,
+      "h": "d78580dd8c302ad5"
+    },
+    {
+      "p": "backend/agents/parser.ts",
+      "s": 7146,
+      "h": "9524376613170184"
+    },
+    {
+      "p": "backend/agents/profiles.ts",
+      "s": 7324,
+      "h": "de42bae72f04b811"
+    },
+    {
+      "p": "backend/agents/prompts.ts",
+      "s": 6358,
+      "h": "19774bcb138cea2f"
+    },
+    {
+      "p": "backend/agents/task-service.ts",
+      "s": 11982,
+      "h": "5aa20b9ce9dce562"
+    },
+    {
+      "p": "backend/ai/adapters/anthropic.ts",
+      "s": 9726,
+      "h": "95134ba7bbb165ee"
+    },
+    {
+      "p": "backend/ai/adapters/google.ts",
+      "s": 9012,
+      "h": "6d73ca2cc44e4385"
+    },
+    {
+      "p": "backend/ai/adapters/openai-compatible.ts",
+      "s": 11034,
+      "h": "b17671d5e99ea913"
+    },
+    {
+      "p": "backend/ai/adapters/registry.ts",
+      "s": 6449,
+      "h": "e590d4e49dee6ca9"
+    },
+    {
+      "p": "backend/ai/catalog.ts",
+      "s": 8522,
+      "h": "f928be5e56b088af"
+    },
+    {
+      "p": "backend/ai/chat-service.ts",
+      "s": 9496,
+      "h": "254b12ba615b6a36"
+    },
+    {
+      "p": "backend/ai/context.ts",
+      "s": 5530,
+      "h": "c4f0fad2ff7372f6"
+    },
+    {
+      "p": "backend/ai/errors.ts",
+      "s": 3133,
+      "h": "a00b02d427488717"
+    },
+    {
+      "p": "backend/ai/gateway.ts",
+      "s": 12522,
+      "h": "abbcdb3eaea6ed29"
+    },
+    {
+      "p": "backend/ai/http.ts",
+      "s": 7003,
+      "h": "e1b733d89f56fd9b"
+    },
+    {
+      "p": "backend/ai/provider-service.ts",
+      "s": 18951,
+      "h": "498cde8d39a44e02"
+    },
+    {
+      "p": "backend/browser/browser-service.ts",
+      "s": 5986,
+      "h": "a9622c8061afdf8f"
+    },
+    {
+      "p": "backend/database/db.ts",
+      "s": 2790,
+      "h": "31d53c50aafced13"
+    },
+    {
+      "p": "backend/database/schema.ts",
+      "s": 10169,
+      "h": "96c73ed18e47c5a4"
+    },
+    {
+      "p": "backend/docker/docker-service.ts",
+      "s": 7125,
+      "h": "dd1ef7cfac92245e"
+    },
+    {
+      "p": "backend/files/file-service.ts",
+      "s": 24965,
+      "h": "994e599349575fba"
+    },
+    {
+      "p": "backend/memory/settings.ts",
+      "s": 3339,
+      "h": "d800fa8e03fb304a"
+    },
+    {
+      "p": "backend/orchestration/events.ts",
+      "s": 1942,
+      "h": "246ec41c08c35e20"
+    },
+    {
+      "p": "backend/orchestration/orchestrator.ts",
+      "s": 34468,
+      "h": "66957f280767bfba"
+    },
+    {
+      "p": "backend/projects/project-service.ts",
+      "s": 4804,
+      "h": "14ff038271a9209b"
+    },
+    {
+      "p": "backend/security/approvals.ts",
+      "s": 6006,
+      "h": "1c3abb1f411d31cf"
+    },
+    {
+      "p": "backend/security/audit.ts",
+      "s": 4531,
+      "h": "c22876c7e48bd8bd"
+    },
+    {
+      "p": "backend/security/command-analyzer.ts",
+      "s": 7450,
+      "h": "685e33a40ff245c0"
+    },
+    {
+      "p": "backend/security/paths.ts",
+      "s": 4111,
+      "h": "325864d864948a79"
+    },
+    {
+      "p": "backend/security/redaction.ts",
+      "s": 3644,
+      "h": "e31ef74ad7017273"
+    },
+    {
+      "p": "backend/security/secrets.ts",
+      "s": 6324,
+      "h": "9a901e693d80d0a4"
+    },
+    {
+      "p": "backend/server/app.ts",
+      "s": 3802,
+      "h": "c8627a43048d0ee4"
+    },
+    {
+      "p": "backend/server/container.ts",
+      "s": 5523,
+      "h": "32b581c61ae3cd8d"
+    },
+    {
+      "p": "backend/server/routes.ts",
+      "s": 30652,
+      "h": "3a6b8d40fd6edd91"
+    },
+    {
+      "p": "backend/server/runtimeBridge.ts",
+      "s": 728,
+      "h": "4e8a68c51d2be375"
+    },
+    {
+      "p": "backend/server/standalone.ts",
+      "s": 1278,
+      "h": "e3c5c76b10b29a9f"
+    },
+    {
+      "p": "backend/terminal/terminal-service.ts",
+      "s": 14331,
+      "h": "30c491b79c5e74bc"
+    },
+    {
+      "p": "backend/testing/test-service.ts",
+      "s": 11478,
+      "h": "23958113a1aba574"
+    },
+    {
+      "p": "docs/KULLANIM_TR.md",
+      "s": 10975,
+      "h": "cc1fb6c466bb7f44"
+    },
+    {
+      "p": "docs/KURULUM_TR.md",
+      "s": 11386,
+      "h": "bbce2b68a020d96f"
+    },
+    {
+      "p": "docs/ekranlar/01-sohbet.png",
+      "s": 178494,
+      "h": "7333b71bf74c4b36"
+    },
+    {
+      "p": "docs/ekranlar/02-projeler.png",
+      "s": 183267,
+      "h": "099157f784173b9b"
+    },
+    {
+      "p": "docs/ekranlar/03-dosyalar.png",
+      "s": 186130,
+      "h": "2346a7454e59b0bf"
+    },
+    {
+      "p": "docs/ekranlar/04-modeller.png",
+      "s": 188112,
+      "h": "26b80e8d7a68f2b9"
+    },
+    {
+      "p": "docs/ekranlar/05-ajanlar.png",
+      "s": 266697,
+      "h": "c7098a39a1f1ea84"
+    },
+    {
+      "p": "docs/ekranlar/06-gorevler.png",
+      "s": 276513,
+      "h": "ff1a52b0ce8d1dbe"
+    },
+    {
+      "p": "docs/ekranlar/07-tarayici.png",
+      "s": 164465,
+      "h": "654d5801db6e0aaf"
+    },
+    {
+      "p": "docs/ekranlar/08-terminal.png",
+      "s": 170563,
+      "h": "f9a39dfd30d2b2e4"
+    },
+    {
+      "p": "docs/ekranlar/09-docker.png",
+      "s": 195273,
+      "h": "ab42128c7e97b563"
+    },
+    {
+      "p": "docs/ekranlar/10-editor.png",
+      "s": 168830,
+      "h": "5a96062e1f7f306b"
+    },
+    {
+      "p": "docs/ekranlar/11-testler.png",
+      "s": 210570,
+      "h": "fe8e8a32af25d2f2"
+    },
+    {
+      "p": "docs/ekranlar/12-gecmis.png",
+      "s": 319297,
+      "h": "03cbf6e40429f9ab"
+    },
+    {
+      "p": "docs/ekranlar/13-ayarlar.png",
+      "s": 270093,
+      "h": "5e3ebac81d10e698"
+    },
+    {
+      "p": "docs/ekranlar/14-yardim.png",
+      "s": 327006,
+      "h": "51c54b1e0b0adb4d"
+    },
+    {
+      "p": "docs/hash-list.json",
+      "s": 264,
+      "h": "01e3876312335e69"
+    },
+    {
+      "p": "docs/teslim/ANA_EKSIK_LISTESI.md",
+      "s": 14151,
+      "h": "5e37f771a6c81602"
+    },
+    {
+      "p": "docs/teslim/DENETIM_RAPORU_2.md",
+      "s": 15434,
+      "h": "e2ddc1a516762452"
+    },
+    {
+      "p": "docs/teslim/DENETIM_RAPORU_3.md",
+      "s": 28560,
+      "h": "51889a6c30e5bd3b"
+    },
+    {
+      "p": "docs/teslim/EXE_DURUMU.md",
+      "s": 2240,
+      "h": "7b09e188d364aefa"
+    },
+    {
+      "p": "docs/teslim/HATA_DUZELTME_RAPORU.md",
+      "s": 6717,
+      "h": "793bba305992c0c2"
+    },
+    {
+      "p": "docs/teslim/SECURITY_REPORT.md",
+      "s": 14530,
+      "h": "27331c9216081fb0"
+    },
+    {
+      "p": "docs/teslim/TEST_REPORT.md",
+      "s": 12499,
+      "h": "d78580dd8c302ad5"
+    },
+    {
+      "p": "docs/teslim/verify-report.json",
+      "s": 1011,
+      "h": "8a759664fcfebb8d"
+    },
+    {
+      "p": "electron/ipc/handlers.ts",
+      "s": 4783,
+      "h": "129ed4b3fd6ef80e"
+    },
+    {
+      "p": "electron/main/browser-bridge.ts",
+      "s": 7491,
+      "h": "b5938995a7a586e6"
+    },
+    {
+      "p": "electron/main/index.ts",
+      "s": 4655,
+      "h": "96dbe4313e6b3a5d"
+    },
+    {
+      "p": "electron/preload/index.ts",
+      "s": 2349,
+      "h": "f7be24e1a320f4ce"
+    },
+    {
+      "p": "electron-builder.yml",
+      "s": 2213,
+      "h": "21ab3ca98b9f43cd"
+    },
+    {
+      "p": "electron.vite.config.ts",
+      "s": 1281,
+      "h": "a52198053e6e09e4"
+    },
+    {
+      "p": "index.html",
+      "s": 620,
+      "h": "275d0f8cd01a4f62"
+    },
+    {
+      "p": "package.json",
+      "s": 3078,
+      "h": "4aff6b6db119ad60"
+    },
+    {
+      "p": "postcss.config.js",
+      "s": 81,
+      "h": "e32657baf631d7c5"
+    },
+    {
+      "p": "resources/icon.png",
+      "s": 2601,
+      "h": "74fa4feec57e3d6c"
+    },
+    {
+      "p": "resources/icons/1024x1024.png",
+      "s": 13658,
+      "h": "5f1dab37c26efdac"
+    },
+    {
+      "p": "resources/icons/128x128.png",
+      "s": 1312,
+      "h": "0cd2b66f2e30783a"
+    },
+    {
+      "p": "resources/icons/16x16.png",
+      "s": 257,
+      "h": "57f380e5d593ee81"
+    },
+    {
+      "p": "resources/icons/24x24.png",
+      "s": 321,
+      "h": "c8e3928dc5d22f9f"
+    },
+    {
+      "p": "resources/icons/256x256.png",
+      "s": 2601,
+      "h": "74fa4feec57e3d6c"
+    },
+    {
+      "p": "resources/icons/32x32.png",
+      "s": 390,
+      "h": "19dee1886cd30eef"
+    },
+    {
+      "p": "resources/icons/48x48.png",
+      "s": 518,
+      "h": "df28f532fd8006ff"
+    },
+    {
+      "p": "resources/icons/512x512.png",
+      "s": 5713,
+      "h": "8269fe039d8e69c4"
+    },
+    {
+      "p": "resources/icons/64x64.png",
+      "s": 659,
+      "h": "417df37e86cdcbdb"
+    },
+    {
+      "p": "resources/icons/icon.ico",
+      "s": 19460,
+      "h": "0ea40f3d09417023"
+    },
+    {
+      "p": "scripts/build-all.mjs",
+      "s": 2004,
+      "h": "36df315651f461a9"
+    },
+    {
+      "p": "scripts/build-windows.ps1",
+      "s": 2646,
+      "h": "38050b458887335c"
+    },
+    {
+      "p": "scripts/check-spec-consistency.mjs",
+      "s": 8399,
+      "h": "fa5f142fd3bc3756"
+    },
+    {
+      "p": "scripts/copy-monaco.mjs",
+      "s": 1394,
+      "h": "1c6267cd2269e705"
+    },
+    {
+      "p": "scripts/e2e-scenario.mjs",
+      "s": 11489,
+      "h": "8f1524edcfff86ea"
+    },
+    {
+      "p": "scripts/fix-native-win.mjs",
+      "s": 5883,
+      "h": "db5966024540078b"
+    },
+    {
+      "p": "scripts/install-electron.mjs",
+      "s": 3505,
+      "h": "f200463292883f22"
+    },
+    {
+      "p": "scripts/mock-provider.ts",
+      "s": 4042,
+      "h": "80d233b5f1e05e0f"
+    },
+    {
+      "p": "scripts/prepare-native-win.mjs",
+      "s": 3819,
+      "h": "e497c1502debba8c"
+    },
+    {
+      "p": "scripts/prepare-release.mjs",
+      "s": 3495,
+      "h": "805d43f1564b3aaa"
+    },
+    {
+      "p": "scripts/smoke.ts",
+      "s": 2498,
+      "h": "c939c51e0ade7df9"
+    },
+    {
+      "p": "scripts/verify-release.mjs",
+      "s": 4739,
+      "h": "97fd7cc56280f525"
+    },
+    {
+      "p": "shared/constants.ts",
+      "s": 1794,
+      "h": "e79242cff067ab86"
+    },
+    {
+      "p": "shared/types/agents.ts",
+      "s": 5647,
+      "h": "ce3fcb38ef2cd94c"
+    },
+    {
+      "p": "shared/types/api.ts",
+      "s": 10224,
+      "h": "65f0ea02707c1dbd"
+    },
+    {
+      "p": "shared/types/app.ts",
+      "s": 2970,
+      "h": "893a281369d7dd3f"
+    },
+    {
+      "p": "shared/types/common.ts",
+      "s": 2253,
+      "h": "701db7aedd7fa367"
+    },
+    {
+      "p": "shared/types/index.ts",
+      "s": 200,
+      "h": "4e59eef4fb9b4e4e"
+    },
+    {
+      "p": "shared/types/models.ts",
+      "s": 6216,
+      "h": "7222ebf96d332fa2"
+    },
+    {
+      "p": "shared/types/projects.ts",
+      "s": 2413,
+      "h": "d76763beed92b212"
+    },
+    {
+      "p": "shared/types/runtime.ts",
+      "s": 6032,
+      "h": "17666fa6c6fcb720"
+    },
+    {
+      "p": "spec/AI_WORKSTATION_SPEC_v2.md",
+      "s": 106427,
+      "h": "33abf3ca2ed7b31a"
+    },
+    {
+      "p": "spec/ANA_EKSIK_LISTESI.md",
+      "s": 14151,
+      "h": "5e37f771a6c81602"
+    },
+    {
+      "p": "spec/DENETIM_RAPORU_2.md",
+      "s": 15045,
+      "h": "a65fd10c20fe57c5"
+    },
+    {
+      "p": "spec/DENETIM_RAPORU_3.md",
+      "s": 28560,
+      "h": "51889a6c30e5bd3b"
+    },
+    {
+      "p": "spec/EKSIKLER_OZET.md",
+      "s": 9269,
+      "h": "7ebef8f1d788b1b0"
+    },
+    {
+      "p": "spec/IZLENEBILIRLIK_TABLOSU.md",
+      "s": 7668,
+      "h": "c01a7dee31f3db2b"
+    },
+    {
+      "p": "spec/KABUL_TEST_MATRISI.md",
+      "s": 10762,
+      "h": "6d44e36d230aa745"
+    },
+    {
+      "p": "spec/YOL_HARITASI.md",
+      "s": 7623,
+      "h": "fd1f840873a11b55"
+    },
+    {
+      "p": "spec/eksikler/E-01-benchmark.md",
+      "s": 2477,
+      "h": "9cc459bfa47cbade"
+    },
+    {
+      "p": "spec/eksikler/E-02-error-boundary.md",
+      "s": 1719,
+      "h": "f38618a015d56c2f"
+    },
+    {
+      "p": "spec/eksikler/E-03-erisilebilirlik.md",
+      "s": 1523,
+      "h": "cb81b668fa0cb133"
+    },
+    {
+      "p": "spec/eksikler/E-04-anahtar-rotasyonu.md",
+      "s": 1759,
+      "h": "6095fcffebffbfc2"
+    },
+    {
+      "p": "spec/eksikler/E-05-katalog-onbellek.md",
+      "s": 1491,
+      "h": "f26462da78c6dd70"
+    },
+    {
+      "p": "spec/eksikler/E-06-rbac.md",
+      "s": 2065,
+      "h": "26a977d7a42a3858"
+    },
+    {
+      "p": "spec/eksikler/E-07-ajan-butcesi.md",
+      "s": 1561,
+      "h": "47918cbc9e3ec8f7"
+    },
+    {
+      "p": "spec/eksikler/E-08-yedek-sifreleme.md",
+      "s": 1825,
+      "h": "48d4303932bff959"
+    },
+    {
+      "p": "spec/eksikler/E-09-tarayici-senaryo.md",
+      "s": 1756,
+      "h": "a8578a9473485ef5"
+    },
+    {
+      "p": "spec/eksikler/E-10-etkilesimli-komut.md",
+      "s": 1601,
+      "h": "58beef4c9dbe5788"
+    },
+    {
+      "p": "spec/eksikler/E-11-docker-genisletme.md",
+      "s": 1525,
+      "h": "e91ceb5022b9233f"
+    },
+    {
+      "p": "spec/eksikler/E-12-dosya-indeksi.md",
+      "s": 1746,
+      "h": "b98b263aaaade59c"
+    },
+    {
+      "p": "spec/eksikler/E-13-ses-saglayici.md",
+      "s": 1824,
+      "h": "79f757df4be73cbf"
+    },
+    {
+      "p": "spec/eksikler/E-14-benchmark-tablosu.md",
+      "s": 1575,
+      "h": "deabdb231a7f5f5a"
+    },
+    {
+      "p": "spec/eksikler/E-15-kilit-tablosu.md",
+      "s": 1405,
+      "h": "4b72d33e9610ec3c"
+    },
+    {
+      "p": "spec/eksikler/E-16-gorev-sablonlari.md",
+      "s": 1418,
+      "h": "8ff2edbdc6911d6c"
+    },
+    {
+      "p": "spec/eksikler/E-17-coklu-proje.md",
+      "s": 1464,
+      "h": "28a2291c3c104f1d"
+    },
+    {
+      "p": "spec/eksikler/E-18-butce-uyari.md",
+      "s": 1540,
+      "h": "03f07897a3c85f06"
+    },
+    {
+      "p": "spec/eksikler/E-19-olay-telafisi.md",
+      "s": 1435,
+      "h": "2a7159ddcf35d07e"
+    },
+    {
+      "p": "spec/eksikler/E-20-metrik-gecmisi.md",
+      "s": 1277,
+      "h": "3d9ecef914bcbfda"
+    },
+    {
+      "p": "spec/eksikler/E-21-oncelik-kuyrugu.md",
+      "s": 1334,
+      "h": "cd7dfe4f7fe47c1a"
+    },
+    {
+      "p": "spec/eksikler/E-22-sayfalama.md",
+      "s": 1665,
+      "h": "a7b97a22beeeaadf"
+    },
+    {
+      "p": "spec/eksikler/E-23-yeniden-deneme.md",
+      "s": 1771,
+      "h": "97b3775dee6ab506"
+    },
+    {
+      "p": "spec/eksikler/E-24-test-genisletme.md",
+      "s": 1585,
+      "h": "c8b697cf03c20e67"
+    },
+    {
+      "p": "spec/eksikler/E-25-saklama-politikasi.md",
+      "s": 1633,
+      "h": "d7eb95212816dfad"
+    },
+    {
+      "p": "spec/eksikler/E-26-geri-yukleme-dogrulama.md",
+      "s": 1438,
+      "h": "07ad562cec941c53"
+    },
+    {
+      "p": "spec/eksikler/E-27-kurtarma-senaryolari.md",
+      "s": 1940,
+      "h": "c0f76a8046fd0c85"
+    },
+    {
+      "p": "spec/eksikler/E-28-tanilama-paketi.md",
+      "s": 1575,
+      "h": "da05406e43eaace6"
+    },
+    {
+      "p": "spec/eksikler/E-29-api-surumleme.md",
+      "s": 1295,
+      "h": "f24167c163838f65"
+    },
+    {
+      "p": "spec/eksikler/E-30-mimari-test.md",
+      "s": 1485,
+      "h": "47de723f8aedfe27"
+    },
+    {
+      "p": "spec/eksikler/E-31-enjeksiyon-taramasi.md",
+      "s": 1742,
+      "h": "5bded626cd1456b3"
+    },
+    {
+      "p": "spec/eksikler/E-32-arka-plan-isler.md",
+      "s": 1715,
+      "h": "60438e86edc1f988"
+    },
+    {
+      "p": "spec/eksikler/E-33-performans-izleme.md",
+      "s": 1340,
+      "h": "76b8801592239dbf"
+    },
+    {
+      "p": "spec/eksikler/E-34-rota-bolme.md",
+      "s": 1254,
+      "h": "7e093ba4ea06649b"
+    },
+    {
+      "p": "spec/eksikler/E-35-i18n.md",
+      "s": 1294,
+      "h": "e56f7e6d3ff2b5d5"
+    },
+    {
+      "p": "spec/eksikler/E-36-eklenti-sistemi.md",
+      "s": 1425,
+      "h": "d52161108d0d4dca"
+    },
+    {
+      "p": "spec/eksikler/E-37-git-entegrasyonu.md",
+      "s": 1623,
+      "h": "b7c2003134fcf283"
+    },
+    {
+      "p": "spec/eksikler/E-38-uzak-proje.md",
+      "s": 1283,
+      "h": "849af328821429e6"
+    },
+    {
+      "p": "spec/eksikler/E-39-bildirim-merkezi.md",
+      "s": 1175,
+      "h": "c694fe134e4d455b"
+    },
+    {
+      "p": "spec/eksikler/E-40-otomatik-guncelleme.md",
+      "s": 1714,
+      "h": "72a9a9e768e1d1ed"
+    },
+    {
+      "p": "spec/eksikler/E-41-ci-windows-uretimi.md",
+      "s": 1769,
+      "h": "a6975d5ffd51ff6d"
+    },
+    {
+      "p": "spec/eksikler/E-42-kod-imzalama.md",
+      "s": 1456,
+      "h": "0851faa2c450929c"
+    },
+    {
+      "p": "spec/eksikler/E-43-kurumsal-dagitim.md",
+      "s": 1269,
+      "h": "616a0e7c86da4244"
+    },
+    {
+      "p": "spec/eksikler/E-44-telemetri.md",
+      "s": 1458,
+      "h": "70498af1e55e5a31"
+    },
+    {
+      "p": "spec/eksikler/E-45-puan-siralama.md",
+      "s": 3878,
+      "h": "88e91e9b87c7b94d"
+    },
+    {
+      "p": "spec/eksikler/E-46-dokuman-iddia-denetimi.md",
+      "s": 5294,
+      "h": "39e05656556ff6ed"
+    },
+    {
+      "p": "spec/eksikler/E-47-surum-ayrimi.md",
+      "s": 6293,
+      "h": "d1a17bd284b0c90c"
+    },
+    {
+      "p": "spec/eksikler/E-48-iptal-isaretleme.md",
+      "s": 8365,
+      "h": "be824fd8a38188fc"
+    },
+    {
+      "p": "src/App.tsx",
+      "s": 5252,
+      "h": "de7dbd72c5cfd744"
+    },
+    {
+      "p": "src/components/ui.tsx",
+      "s": 6377,
+      "h": "02afb953eac20568"
+    },
+    {
+      "p": "src/hooks/useVoice.ts",
+      "s": 5068,
+      "h": "e0d67090ada2b577"
+    },
+    {
+      "p": "src/layouts/RightRail.tsx",
+      "s": 7708,
+      "h": "6d3185b9ad03fa36"
+    },
+    {
+      "p": "src/layouts/Sidebar.tsx",
+      "s": 3706,
+      "h": "682bcce65d719c34"
+    },
+    {
+      "p": "src/layouts/StatusBar.tsx",
+      "s": 2272,
+      "h": "57602d3db664ef26"
+    },
+    {
+      "p": "src/layouts/TitleBar.tsx",
+      "s": 7906,
+      "h": "9b070c76beba2bdc"
+    },
+    {
+      "p": "src/main.tsx",
+      "s": 330,
+      "h": "0f975b7b2ca5ab87"
+    },
+    {
+      "p": "src/pages/AgentsPage.tsx",
+      "s": 7996,
+      "h": "806e13d8759df588"
+    },
+    {
+      "p": "src/pages/BrowserPage.tsx",
+      "s": 7632,
+      "h": "15cba115cd22519a"
+    },
+    {
+      "p": "src/pages/ChatPage.tsx",
+      "s": 17758,
+      "h": "db0deba4e699fc19"
+    },
+    {
+      "p": "src/pages/DockerPage.tsx",
+      "s": 8215,
+      "h": "ab6cccf3e7a419ce"
+    },
+    {
+      "p": "src/pages/EditorPage.tsx",
+      "s": 7004,
+      "h": "08dde351cbe809ad"
+    },
+    {
+      "p": "src/pages/FilesPage.tsx",
+      "s": 10358,
+      "h": "5c2d201d71427746"
+    },
+    {
+      "p": "src/pages/HelpPage.tsx",
+      "s": 6461,
+      "h": "b4b874596a0d7331"
+    },
+    {
+      "p": "src/pages/HistoryPage.tsx",
+      "s": 4491,
+      "h": "ad586b688458b8c1"
+    },
+    {
+      "p": "src/pages/ModelsPage.tsx",
+      "s": 16995,
+      "h": "8654e45711852785"
+    },
+    {
+      "p": "src/pages/ProjectsPage.tsx",
+      "s": 4666,
+      "h": "394820e069608bef"
+    },
+    {
+      "p": "src/pages/SettingsPage.tsx",
+      "s": 10123,
+      "h": "d0e28578e3d6eed7"
+    },
+    {
+      "p": "src/pages/TasksPage.tsx",
+      "s": 14443,
+      "h": "273a1778c6894f8d"
+    },
+    {
+      "p": "src/pages/TerminalPage.tsx",
+      "s": 7978,
+      "h": "8281395c145898a0"
+    },
+    {
+      "p": "src/pages/TestsPage.tsx",
+      "s": 7821,
+      "h": "28df8abb546e3ec8"
+    },
+    {
+      "p": "src/services/api.ts",
+      "s": 7686,
+      "h": "4fd05ea7abfa4ee5"
+    },
+    {
+      "p": "src/services/monaco.ts",
+      "s": 1802,
+      "h": "001547db866086b7"
+    },
+    {
+      "p": "src/stores/useAppStore.ts",
+      "s": 6510,
+      "h": "9f061fceee522f35"
+    },
+    {
+      "p": "src/styles/index.css",
+      "s": 2766,
+      "h": "8704d3c712dc711d"
+    },
+    {
+      "p": "src/types/index.ts",
+      "s": 1106,
+      "h": "70c70f80a200b94f"
+    },
+    {
+      "p": "src/vite-env.d.ts",
+      "s": 212,
+      "h": "a5f3abfc6086774b"
+    },
+    {
+      "p": "tailwind.config.js",
+      "s": 1377,
+      "h": "d50dd5b2084a9081"
+    },
+    {
+      "p": "tests/helpers.ts",
+      "s": 5780,
+      "h": "a3b8d512593e7da7"
+    },
+    {
+      "p": "tests/integration/api-contract.test.ts",
+      "s": 7373,
+      "h": "4d8c8b163b46c09c"
+    },
+    {
+      "p": "tests/integration/chat-stream-electron-path.test.ts",
+      "s": 3107,
+      "h": "ecd5a3bbc95742ff"
+    },
+    {
+      "p": "tests/integration/emergency-stop-all-streams.test.ts",
+      "s": 6736,
+      "h": "b99813ddc64649d2"
+    },
+    {
+      "p": "tests/integration/gateway.test.ts",
+      "s": 6913,
+      "h": "7c777237102577d6"
+    },
+    {
+      "p": "tests/integration/orchestrator.test.ts",
+      "s": 4797,
+      "h": "e8fe3044201bd818"
+    },
+    {
+      "p": "tests/unit/approvals.test.ts",
+      "s": 1682,
+      "h": "d6109a75e6e14658"
+    },
+    {
+      "p": "tests/unit/chat-cancel.test.ts",
+      "s": 3642,
+      "h": "60a0ac56b6bd880a"
+    },
+    {
+      "p": "tests/unit/command-analyzer.test.ts",
+      "s": 2323,
+      "h": "c2d40f19104a0bc3"
+    },
+    {
+      "p": "tests/unit/context.test.ts",
+      "s": 2245,
+      "h": "dcd75318353162d3"
+    },
+    {
+      "p": "tests/unit/database.test.ts",
+      "s": 2227,
+      "h": "b0dc10c122ee7846"
+    },
+    {
+      "p": "tests/unit/electron-security.test.ts",
+      "s": 2973,
+      "h": "32ea2218f1652250"
+    },
+    {
+      "p": "tests/unit/file-service.test.ts",
+      "s": 5585,
+      "h": "4e9cc688b3d52dad"
+    },
+    {
+      "p": "tests/unit/migration.test.ts",
+      "s": 2324,
+      "h": "e8ef0e8b330b9c71"
+    },
+    {
+      "p": "tests/unit/parsers.test.ts",
+      "s": 3895,
+      "h": "e3198998a5ab09f5"
+    },
+    {
+      "p": "tests/unit/paths-security.test.ts",
+      "s": 1936,
+      "h": "d24a65a55f2ce95d"
+    },
+    {
+      "p": "tests/unit/redaction.test.ts",
+      "s": 1991,
+      "h": "260d281bcd4ac1ce"
+    },
+    {
+      "p": "tests/unit/release-status.test.ts",
+      "s": 2537,
+      "h": "31334b9f7d80198b"
+    },
+    {
+      "p": "tests/unit/secrets.test.ts",
+      "s": 2531,
+      "h": "030720c0ae3cf0dc"
+    },
+    {
+      "p": "tests/unit/settings.test.ts",
+      "s": 1414,
+      "h": "39d7bfb69ae52504"
+    },
+    {
+      "p": "tests/unit/test-outcome.test.ts",
+      "s": 3221,
+      "h": "b48cbb82f3910d75"
+    },
+    {
+      "p": "tests/unit/test-service.test.ts",
+      "s": 3226,
+      "h": "ff47c1ad0b07c756"
+    },
+    {
+      "p": "tests/unit/version.test.ts",
+      "s": 2418,
+      "h": "0a98406c8d499850"
+    },
+    {
+      "p": "tests/verify/e48-timeout-independent.ts",
+      "s": 6119,
+      "h": "67c2e6eb67e1b665"
+    },
+    {
+      "p": "tests/verify/emergency-stop-independent.ts",
+      "s": 7790,
+      "h": "886639b7168b0ef5"
+    },
+    {
+      "p": "tests/verify/migration-independent.ts",
+      "s": 4951,
+      "h": "cd1b5a4e627d0e8c"
+    },
+    {
+      "p": "tools/KUR.cmd",
+      "s": 7274,
+      "h": "86d44b27abff10f4"
+    },
+    {
+      "p": "tools/NASIL_KULLANILIR.md",
+      "s": 6906,
+      "h": "7cb41d942bc1cbd2"
+    },
+    {
+      "p": "tools/ONAR.cmd",
+      "s": 5785,
+      "h": "973013a825b8c8db"
+    },
+    {
+      "p": "tools/SORUN_GIDERME.md",
+      "s": 8673,
+      "h": "8292799131f53d8c"
+    },
+    {
+      "p": "tools/TARA.cmd",
+      "s": 4804,
+      "h": "bfced330e2d42367"
+    },
+    {
+      "p": "tools/WINDOWS_KURULUM.md",
+      "s": 6767,
+      "h": "830a2c067a380ebf"
+    },
+    {
+      "p": "tools/aw-scan.cjs",
+      "s": 20637,
+      "h": "1f965ff17982eee6"
+    },
+    {
+      "p": "tools/prebuilds/better-sqlite3-v12.11.1-node-v127-win32-x64.tar.gz",
+      "s": 1039346,
+      "h": "927b34496e946dc7"
+    },
+    {
+      "p": "tools/prebuilds/better-sqlite3-v12.11.1-node-v147-win32-x64.tar.gz",
+      "s": 1040232,
+      "h": "ff6d04d52e1625d4"
+    },
+    {
+      "p": "tsconfig.json",
+      "s": 833,
+      "h": "4a6430f575c79c65"
+    },
+    {
+      "p": "vite.config.ts",
+      "s": 3232,
+      "h": "2cd534945fa6ca42"
+    },
+    {
+      "p": "vitest.config.ts",
+      "s": 558,
+      "h": "678df74b8bab4e09"
+    }
+  ]
+}

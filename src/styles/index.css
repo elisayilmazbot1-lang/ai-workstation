@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --scrollbar-thumb: #2e3a50;
+  --scrollbar-track: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 15% -10%, rgba(91, 140, 255, 0.09), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(167, 139, 250, 0.06), transparent 55%), #07090f;
+  overflow: hidden;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+@layer components {
+  .panel {
+    @apply rounded-xl border border-white/5 bg-base-900/70 shadow-panel backdrop-blur-sm;
+  }
+  .panel-header {
+    @apply flex items-center justify-between gap-2 border-b border-white/5 px-3 py-2;
+  }
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-base-800 px-2.5 py-1.5 text-xs font-medium text-slate-200 transition hover:border-white/20 hover:bg-base-750 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply border-accent/40 bg-accent/15 text-accent-soft hover:bg-accent/25 hover:text-white;
+  }
+  .btn-danger {
+    @apply border-rose/40 bg-rose/10 text-rose hover:bg-rose/20;
+  }
+  .btn-ghost {
+    @apply border-transparent bg-transparent hover:bg-white/5;
+  }
+  .input {
+    @apply w-full rounded-lg border border-white/10 bg-base-950/70 px-2.5 py-1.5 text-xs text-slate-200 outline-none transition placeholder:text-slate-500 focus:border-accent/50 focus:ring-1 focus:ring-accent/30;
+  }
+  .label {
+    @apply mb-1 block text-[11px] font-medium uppercase tracking-wide text-slate-500;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-slate-300;
+  }
+  .tag-free {
+    @apply border-teal/40 bg-teal/10 text-teal;
+  }
+  .tag-paid {
+    @apply border-amber/40 bg-amber/10 text-amber;
+  }
+  .tag-unknown {
+    @apply border-white/15 bg-white/5 text-slate-400;
+  }
+  .mono {
+    @apply font-mono text-[11px];
+  }
+  .nav-item {
+    @apply flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[7px] text-left text-[12.5px] text-slate-400 transition hover:bg-white/5 hover:text-slate-200;
+  }
+  .nav-item-active {
+    @apply bg-accent/10 text-accent-soft shadow-[inset_0_0_0_1px_rgba(91,140,255,0.25)];
+  }
+  .kbd {
+    @apply rounded border border-white/10 bg-white/5 px-1 py-0.5 font-mono text-[10px] text-slate-400;
+  }
+}

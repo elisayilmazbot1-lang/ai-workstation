@@ -1,0 +1,81 @@
+name: Windows kurulum dosyası
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: AI_WORKSTATION_Setup.exe üret
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Kaynağı al
+        uses: actions/checkout@v4
+
+      - name: Node.js 26 kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: 'npm'
+
+      # --ignore-scripts NEDEN?
+      # `npm ci` normalde better-sqlite3 için prebuild-install çalıştırır ve
+      # hazır ikiliyi GitHub Releases'ten indirir. GitHub Releases bazı ağlarda
+      # 404 döner; o zaman node-gyp kaynaktan derlemeye düşer ve Visual Studio
+      # ister. Burada derlemeyi atlıyoruz, hazır Windows ikilisini depodaki
+      # tools/prebuilds/ arşivinden yerleştiriyoruz.
+      - name: Bağımlılıkları kur (derleme betikleri hariç)
+        run: npm ci --ignore-scripts
+
+      - name: better-sqlite3 Windows ikilisini yerleştir
+        shell: pwsh
+        run: |
+          $major = (node -p "process.versions.node.split('.')[0]")
+          $abiMap = @{ '20'='115'; '22'='127'; '23'='131'; '24'='137'; '25'='141'; '26'='147' }
+          $abi = $abiMap[$major]
+          if (-not $abi) { throw "Desteklenmeyen Node sürümü: $major" }
+          $archive = "tools/prebuilds/better-sqlite3-v12.11.1-node-v$abi-win32-x64.tar.gz"
+          if (-not (Test-Path $archive)) { throw "İkili arşivi yok: $archive" }
+          Write-Host "Node $major -> ABI $abi"
+          tar xzf $archive -C "node_modules/better-sqlite3"
+          $node = "node_modules/better-sqlite3/build/Release/better_sqlite3.node"
+          if (-not (Test-Path $node)) { throw "better_sqlite3.node oluşmadı" }
+          Write-Host "Yerleştirildi: $((Get-Item $node).Length) bayt"
+
+      - name: better-sqlite3 yükleniyor mu
+        run: |
+          node -e "const D=require('better-sqlite3');const d=new D(':memory:');d.exec('CREATE TABLE t(a)');d.prepare('INSERT INTO t VALUES(?)').run('ok');const r=d.prepare('SELECT a FROM t').get();d.close();console.log('veritabani:',r.a);process.exit(r.a=='ok'?0:1)"
+
+      - name: Editör dosyaları
+        run: npm run monaco
+
+      - name: Doğrulama (7 adım + E2E)
+        run: npm run verify
+
+      - name: Windows kurulum dosyası (NSIS + portable)
+        run: npm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Özet listesi
+        shell: powershell
+        run: |
+          Get-ChildItem release -File | Where-Object { $_.Extension -in '.exe','.zip','.blockmap','.yml' } |
+            ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  release/$($_.Name)" } |
+            Set-Content -Path release/SHA256SUMS.txt -Encoding utf8
+          Get-Content release/SHA256SUMS.txt
+
+      - name: Yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI_WORKSTATION_windows
+          path: |
+            release/*.exe
+            release/*.blockmap
+            release/*.yml
+            release/SHA256SUMS.txt
+          retention-days: 14
