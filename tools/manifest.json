@@ -2,7 +2,7 @@
   "product": "AI Workstation",
   "version": "1.0.0",
   "spec": "AWS-SPEC-2.0",
-  "generated": "2026-11-01T09:37:56.882Z",
+  "generated": "2026-11-01T09:41:33.583Z",
   "fileCount": 235,
   "files": [
     {
@@ -37,8 +37,8 @@
     },
     {
       "p": "README_TR.md",
-      "s": 15211,
-      "h": "38c8b9bf8c1ae26a"
+      "s": 15218,
+      "h": "2e6f3e64f7c57c89"
     },
     {
       "p": "SECURITY_REPORT.md",
@@ -397,8 +397,8 @@
     },
     {
       "p": "package.json",
-      "s": 3078,
-      "h": "4aff6b6db119ad60"
+      "s": 3099,
+      "h": "b4825de8eea5dccc"
     },
     {
       "p": "postcss.config.js",

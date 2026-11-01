@@ -25,14 +25,14 @@ kendi makinenizde çalıştırın.
 
 ---
 
-## 2. `KULLANICI_ADI` yer tutucusunu doldurun
+## 2. `elisayilmazbot1-lang` yer tutucusunu doldurun
 
-Depoda 4 yerde `KULLANICI_ADI` geçiyor. Kendi kullanıcı adınızla değiştirin:
+Depoda 4 yerde `elisayilmazbot1-lang` geçiyor. Kendi kullanıcı adınızla değiştirin:
 
 | Dosya | Satır |
 |---|---|
 | `package.json` | `repository.url`, `bugs.url`, `homepage` |
-| `README_TR.md` | `git clone https://github.com/KULLANICI_ADI/...` |
+| `README_TR.md` | `git clone https://github.com/elisayilmazbot1-lang/...` |
 
 PowerShell ile toplu değiştirme:
 
@@ -41,10 +41,10 @@ cd C:\yol\ai-workstation
 $kullanici = "SENIN_GITHUB_ADIN"
 
 # package.json
-(Get-Content package.json) -replace 'KULLANICI_ADI', $kullanici | Set-Content package.json -Encoding utf8
+(Get-Content package.json) -replace 'elisayilmazbot1-lang', $kullanici | Set-Content package.json -Encoding utf8
 
 # README_TR.md
-(Get-Content README_TR.md) -replace 'KULLANICI_ADI', $kullanici | Set-Content README_TR.md -Encoding utf8
+(Get-Content README_TR.md) -replace 'elisayilmazbot1-lang', $kullanici | Set-Content README_TR.md -Encoding utf8
 ```
 
 ---
@@ -166,7 +166,7 @@ Adımlar:
 | `Support for password authentication was removed` | Şifre kullanıldı | **PAT** kullanın (§3) |
 | `remote origin already exists` | Uzak zaten bağlı | `git remote set-url origin <yeni-url>` |
 | Dosyalar 100 MB üstü uyarısı | Yanlışlıkla büyük dosya | Depoda en büyük dosya 1 MB (`prebuilds`) — sorun olmamalı |
-| `KULLANICI_ADI` görünüyor | Yer tutucu değiştirilmedi | §2 |
+| `elisayilmazbot1-lang` görünüyor | Yer tutucu değiştirilmedi | §2 |
 
 ---
 

@@ -19,12 +19,12 @@
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "https://github.com/KULLANICI_ADI/ai-workstation.git"
+    "url": "https://github.com/elisayilmazbot1-lang/ai-workstation.git"
   },
   "bugs": {
-    "url": "https://github.com/KULLANICI_ADI/ai-workstation/issues"
+    "url": "https://github.com/elisayilmazbot1-lang/ai-workstation/issues"
   },
-  "homepage": "https://github.com/KULLANICI_ADI/ai-workstation#readme",
+  "homepage": "https://github.com/elisayilmazbot1-lang/ai-workstation#readme",
   "private": true,
   "type": "module",
   "engines": {

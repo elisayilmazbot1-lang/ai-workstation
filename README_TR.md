@@ -45,7 +45,7 @@ AI Workstation, bir yazılım projesini baştan sona ele alabilen yerel bir masa
 ### 2.2 Kaynaktan çalıştırma (geliştirici)
 
 ```powershell
-git clone https://github.com/KULLANICI_ADI/ai-workstation.git
+git clone https://github.com/elisayilmazbot1-lang/ai-workstation.git
 cd ai-workstation
 npm run kur
 ```
