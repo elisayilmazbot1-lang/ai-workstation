@@ -2,7 +2,7 @@
   "product": "AI Workstation",
   "version": "1.0.0",
   "spec": "AWS-SPEC-2.0",
-  "generated": "2026-11-01T11:23:00.281Z",
+  "generated": "2026-11-01T11:24:04.500Z",
   "fileCount": 245,
   "files": [
     {
@@ -347,8 +347,8 @@
     },
     {
       "p": "docs/teslim/HATA_DUZELTME_RAPORU.md",
-      "s": 6717,
-      "h": "793bba305992c0c2"
+      "s": 7040,
+      "h": "915b20bea8a793b0"
     },
     {
       "p": "docs/teslim/SECURITY_REPORT.md",

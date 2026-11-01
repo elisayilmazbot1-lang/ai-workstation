@@ -152,18 +152,22 @@ Artık tek kaynak: `teslim/indirmeler/1-KAYNAK-KOD.zip` (SHA `3ebf1956…`).
 
 | # | Dosya | Boyut | Dosya |
 |---|---|---|---|
-| 1 | `1-KAYNAK-KOD.zip` | 3,4 MB | 217 |
-| 2 | `2-SARTNAME-VE-BELGELER.zip` | 3,0 MB | 79 |
-| 3 | `3-RAPORLAR.zip` | 51 KB | 11 |
-| 4 | `4-KANIT-GORUNTULERI.zip` | 754 KB | 6 |
-| 5 | `5-TARAMA-ARACI.zip` | 27 KB | 7 |
+| 1 | `1-KAYNAK-KOD.zip` | 8,1 MB | 246 |
+| 2 | `2-SARTNAME-VE-BELGELER.zip` | 367 KB | 66 |
+| 3 | `3-RAPORLAR.zip` | 102 KB | 8 |
+| 4 | `4-KANIT-GORUNTULERI.zip` | 3,4 MB | 17 |
+| 5 | `5-TARAMA-ARACI.zip` | 91 KB | 9 |
 
 > **SHA-256 özetleri bu dosyaya yazılmaz** — yazılsaydı ZIP'in kendi içeriği
 > değiştiği için özet her paketlemede bayatlardı. Doğru kaynak:
 > **`teslim/indirmeler/SHA256SUMS.txt`** (tek doğru kaynak).
 
-**1, 3 ve 5 değişti** (11.5.0 → 12.11.1 yükseltmesi). Eski arşivleri değil,
-`SHA256SUMS.txt` ile doğrulanmış yenilerini kullanın.
+**Beşi de yeniden üretildi** — ABI 130 düzeltmesi, `dev:electron` başlatıcısı ve
+manifest üreteci bu sürümde. Üretim tek komut: `node tools/aw-paketle.cjs`.
+Eski arşivleri değil, `SHA256SUMS.txt` ile doğrulanmış yenilerini kullanın.
+Paketlemeden sonra şunlar sınandı: `sha256sum -c` ✔ · `unzip -t` ✔ (5/5) ·
+ayıklanan kopyada `npm ci` + `npm run verify` = 7/7 · 37/37 ✔ ·
+`5-TARAMA-ARACI` ile `1-KAYNAK-KOD` taraması 245/245 ✔
 
 ---
 
