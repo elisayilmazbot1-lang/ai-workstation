@@ -38,10 +38,18 @@ function run(label, command, args, opts = {}) {
     if (fs.existsSync(cmdDosyasi)) {
       result = spawnSync(cmdDosyasi, kalan, { cwd: root, encoding: 'utf8', shell: false, ...opts });
     } else {
+      // Son çare: cmd /c ile çalıştır. Komut adı tırnaklanmalı, aksi hâlde
+      // "C:\Program Files\..." yolu cmd tarafından bölünür.
       result = spawnSync(command, args, { cwd: root, encoding: 'utf8', shell: true, ...opts });
     }
   } else {
-    result = spawnSync(command, args, { cwd: root, encoding: 'utf8', shell: IS_WIN, ...opts });
+    // ÖNEMLİ: shell: true KULLANILMAZ.
+    // process.execPath Windows'ta "C:\Program Files\nodejs\node.exe" gibi
+    // boşluk içerir. shell:true ile args dizisi tek bir komut satırına
+    // birleştirilir ve tırnaklanmadığı için cmd "C:\Program" okur:
+    //   'C:\Program' is not recognized as an internal or external command
+    // shell:false ile execFile semantiği kullanılır, boşluk sorun olmaz.
+    result = spawnSync(command, args, { cwd: root, encoding: 'utf8', shell: false, ...opts });
   }
 
   const ms = Date.now() - t0;

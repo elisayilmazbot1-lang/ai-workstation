@@ -3,29 +3,44 @@
  *
  *   node scripts/install-electron.mjs
  *
- * NEDEN VAR
- * ---------
- * `npm ci --ignore-scripts` çalıştırıldığında Electron'un `postinstall` betiği
- * atlanır ve `node_modules/electron/dist/` oluşmaz. O zaman `npm run dev:electron`
- * ve paketleme çalışmaz:
+ * NEDEN `install.js` KULLANILMIYOR
+ * --------------------------------
+ * Electron'un kendi `install.js` betiği `@electron/get` üzerinden indirir ve
+ * Windows'ta şu sorunlar çıkıyor:
  *
- *   Error: Electron failed to install correctly, please delete node_modules/electron
- *       and try installing again
+ *   1) `@electron/get`, dosya adını "v" öneki OLMADAN üretiyor:
+ *        electron-33.4.11-win32-x64.zip      <-- 404
+ *      Gerçek dosya adı:
+ *        electron-v33.4.11-win32-x64.zip
  *
- * Bu betik, Electron ikilisini sırayla iki kaynaktan indirir:
- *   1) npmmirror aynası  (GitHub engelli ağlarda çalışır)
- *   2) GitHub Releases   (varsayılan)
+ *   2) Hata durumunda çıktı yutuluyor; `0` ile çıkıp hiçbir şey kurmuyor.
+ *      Teşhis imkânsız hâle geliyor.
+ *
+ * Bu betik indirmeyi ve açmayı kendisi yapar: her adımda gerçek hata mesajı
+ * verir, ayna sırasını gösterir ve sonucu doğrular.
+ *
+ * SIRAYLA DENENEN AYNALAR
+ * -----------------------
+ *   1) npmmirror.com/mirrors/electron/            (TR'de hızlı)
+ *   2) registry.npmmirror.com/-/binary/electron/
+ *   3) github.com/electron/electron/releases/download/
  *
  * Zaten kuruluysa hiçbir şey yapmaz (idempotent).
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const electronDir = path.join(root, 'node_modules', 'electron');
-const versionFile = path.join(electronDir, 'dist', 'version');
+const distDir = path.join(electronDir, 'dist');
+const versionFile = path.join(distDir, 'version');
+
+const IS_WIN = process.platform === 'win32';
+const PLATFORM = process.platform;
+const ARCH = process.arch;
 
 if (!fs.existsSync(electronDir)) {
   console.error('✖ node_modules/electron yok.');
@@ -37,8 +52,17 @@ const electronVersion = JSON.parse(
   fs.readFileSync(path.join(electronDir, 'package.json'), 'utf8'),
 ).version;
 
-/* Zaten kurulu mu? */
-if (fs.existsSync(versionFile)) {
+/* Yürütülebilir dosya adı (Electron bunu path.txt'te bekler) */
+const EXE = IS_WIN
+  ? 'electron.exe'
+  : PLATFORM === 'darwin'
+    ? 'Electron.app/Contents/MacOS/Electron'
+    : 'electron';
+
+/* ---------------------------------------------------------------- */
+/* Zaten kurulu mu?                                                  */
+/* ---------------------------------------------------------------- */
+if (fs.existsSync(versionFile) && fs.existsSync(path.join(distDir, EXE))) {
   const kurulu = fs.readFileSync(versionFile, 'utf8').trim().replace(/^v/, '');
   if (kurulu === electronVersion) {
     console.log(`✔ Electron ${electronVersion} zaten kurulu — atlandı.`);
@@ -47,88 +71,115 @@ if (fs.existsSync(versionFile)) {
 }
 
 console.log('· Electron sürümü :', electronVersion);
-console.log('· Platform        :', `${process.platform}-${process.arch}`);
+console.log('· Platform        :', `${PLATFORM}-${ARCH}`);
 
-if (process.platform !== 'win32') {
-  console.log('  (Bu betik Windows için yazıldı; yine de denenecek.)');
+/* ---------------------------------------------------------------- */
+/* Dosya adı ve URL'ler                                              */
+/* ---------------------------------------------------------------- */
+const fileName = `electron-v${electronVersion}-${PLATFORM}-${ARCH}.zip`;
+
+const aynalar = [
+  'https://npmmirror.com/mirrors/electron/',
+  'https://registry.npmmirror.com/-/binary/electron/',
+  'https://github.com/electron/electron/releases/download/',
+];
+
+/* GitHub yolu "v" önekli klasör kullanır, aynalar öneksiz */
+function urlUret(ayna) {
+  const surumKlasoru = ayna.includes('github.com') ? `v${electronVersion}` : electronVersion;
+  return `${ayna}${surumKlasoru}/${fileName}`;
 }
 
 /* ---------------------------------------------------------------- */
 /* İndirme                                                           */
 /* ---------------------------------------------------------------- */
-/**
- * ÖNEMLİ: @electron/get, indirilecek dosya adını şu şekilde üretiyor:
- *
- *   electron-33.4.11-win32-x64.zip      <-- "v" YOK (hatalı)
- *
- * Gerçek dosya adı ise:
- *
- *   electron-v33.4.11-win32-x64.zip     <-- "v" VAR
- *
- * Bu yüzden ELECTRON_CUSTOM_FILENAME ile dosya adını AÇIKÇA veriyoruz.
- * Aksi hâlde tüm aynalar 404 döner.
- */
-function dosyaAdi(platform, arch) {
-  const p = platform === 'darwin' ? 'darwin' : platform === 'win32' ? 'win32' : 'linux';
-  return `electron-v${electronVersion}-${p}-${arch}.zip`;
+const geciciZip = path.join(os.tmpdir(), `electron-${electronVersion}-${Date.now()}.zip`);
+
+async function indir(url) {
+  const yanit = await fetch(url, { redirect: 'follow' });
+  if (!yanit.ok) {
+    throw new Error(`HTTP ${yanit.status} ${yanit.statusText}`);
+  }
+  const boyut = Number(yanit.headers.get('content-length') ?? 0);
+  if (boyut && boyut < 10_000_000) {
+    throw new Error(`Dosya çok küçük (${boyut} bayt) — muhtemelen hata sayfası`);
+  }
+  const veri = Buffer.from(await yanit.arrayBuffer());
+  fs.writeFileSync(geciciZip, veri);
+  return veri.length;
 }
 
-const aynalar = [
-  {
-    ad: 'npmmirror',
-    url: 'https://npmmirror.com/mirrors/electron/',
-  },
-  {
-    ad: 'npmmirror-binary',
-    url: 'https://registry.npmmirror.com/-/binary/electron/',
-  },
-  {
-    ad: 'github',
-    url: 'https://github.com/electron/electron/releases/download/v',
-  },
-];
+let indirilenBoyut = 0;
+let kullanilanAyna = null;
 
-const installJs = path.join(electronDir, 'install.js');
-if (!fs.existsSync(installJs)) {
-  console.error('✖ node_modules/electron/install.js bulunamadı.');
-  process.exit(1);
-}
-
-let basarili = false;
 for (const ayna of aynalar) {
-  console.log(`\n· Deneniyor: ${ayna.ad}`);
-  console.log(`  ELECTRON_MIRROR=${ayna.url}`);
+  const url = urlUret(ayna);
+  console.log(`\n· Deneniyor: ${url}`);
   try {
-    execFileSync(process.execPath, [installJs], {
-      cwd: electronDir,
-      stdio: 'inherit',
-      env: {
-        ...process.env,
-        ELECTRON_MIRROR: ayna.url,
-        ELECTRON_CUSTOM_FILENAME: dosyaAdi(process.platform, process.arch),
-        // GitHub yolunda sürüm "v" önekini URL'den alır; customDir gerekmez.
-        ...(ayna.ad === 'github' ? {} : { ELECTRON_CUSTOM_DIR: electronVersion }),
-      },
-      timeout: 15 * 60 * 1000,
-    });
-  } catch {
-    console.log(`  [UYARI] ${ayna.ad} başarısız.`);
-  }
-  if (fs.existsSync(versionFile)) {
-    basarili = true;
-    console.log(`\n✔ Electron ${electronVersion} indirildi (${ayna.ad}).`);
+    indirilenBoyut = await indir(url);
+    kullanilanAyna = ayna;
+    console.log(`  ✔ İndirildi: ${(indirilenBoyut / 1024 / 1024).toFixed(1)} MB`);
     break;
+  } catch (err) {
+    console.log(`  ✖ Başarısız: ${err.message}`);
   }
 }
 
-if (!basarili) {
+if (!kullanilanAyna) {
   console.error('\n✖ Electron hiçbir kaynaktan indirilemedi.');
-  console.error('  Uygulama arayüzü (npm run dev) yine çalışır;');
+  console.error('  Denenen adresler:');
+  for (const a of aynalar) console.error('    ' + urlUret(a));
+  console.error('\n  Ağ erişimi kapalı olabilir. Uygulama arayüzü (npm run dev) yine çalışır;');
   console.error('  masaüstü kabuğu (npm run dev:electron) ve paketleme çalışmaz.');
-  console.error('\n  Elle çözüm:');
-  console.error('    cd node_modules/electron');
-  console.error('    set ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/');
-  console.error('    set ELECTRON_CUSTOM_FILENAME=' + dosyaAdi(process.platform, process.arch));
-  console.error('    node install.js');
   process.exit(1);
 }
+
+/* ---------------------------------------------------------------- */
+/* Açma                                                              */
+/* ---------------------------------------------------------------- */
+console.log('\n· Açılıyor...');
+fs.rmSync(distDir, { recursive: true, force: true });
+fs.mkdirSync(distDir, { recursive: true });
+
+try {
+  if (IS_WIN) {
+    // Windows 10+ tar.exe (bsdtar) zip destekler; yol sorunlarına karşı
+    // PowerShell Expand-Archive yedek olarak duruyor.
+    try {
+      execFileSync('tar', ['-xf', geciciZip, '-C', distDir], { stdio: 'inherit' });
+    } catch {
+      console.log('  tar başarısız — PowerShell Expand-Archive denenecek');
+      execFileSync(
+        'powershell',
+        ['-NoProfile', '-Command', `Expand-Archive -LiteralPath '${geciciZip}' -DestinationPath '${distDir}' -Force`],
+        { stdio: 'inherit' },
+      );
+    }
+  } else {
+    execFileSync('unzip', ['-q', '-o', geciciZip, '-d', distDir], { stdio: 'inherit' });
+  }
+} catch (err) {
+  console.error('✖ Arşiv açılamadı:', err.message);
+  process.exit(1);
+} finally {
+  fs.rmSync(geciciZip, { force: true });
+}
+
+/* ---------------------------------------------------------------- */
+/* Doğrulama ve tamamlayıcı dosyalar                                 */
+/* ---------------------------------------------------------------- */
+const exeYolu = path.join(distDir, EXE);
+if (!fs.existsSync(exeYolu)) {
+  console.error(`✖ Arşiv açıldı ama '${EXE}' bulunamadı.`);
+  console.error('  Dizin içeriği:', fs.readdirSync(distDir).slice(0, 20).join(', '));
+  process.exit(1);
+}
+
+// Electron, kurulumu bu iki dosyayla doğrular.
+fs.writeFileSync(versionFile, `${electronVersion}\n`);
+fs.writeFileSync(path.join(electronDir, 'path.txt'), EXE);
+
+const boyut = fs.statSync(exeYolu).size;
+console.log(`\n✔ Electron ${electronVersion} kuruldu`);
+console.log(`  → ${path.relative(root, distDir)}`);
+console.log(`  → ${EXE}: ${(boyut / 1024 / 1024).toFixed(0)} MB`);
